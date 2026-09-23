@@ -1,0 +1,2 @@
+Bundle-Activator: ${p}.tb1.Activator
+-privatepackage : ${p}.tb1
