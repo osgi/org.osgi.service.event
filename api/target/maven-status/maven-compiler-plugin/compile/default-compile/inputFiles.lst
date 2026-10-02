@@ -1,0 +1,13 @@
+/home/stbischof/git/OSGI_MIGRATE/osgi_target/org.osgi.service.event/api/src/main/java/org/osgi/service/event/Event.java
+/home/stbischof/git/OSGI_MIGRATE/osgi_target/org.osgi.service.event/api/src/main/java/org/osgi/service/event/EventAdmin.java
+/home/stbischof/git/OSGI_MIGRATE/osgi_target/org.osgi.service.event/api/src/main/java/org/osgi/service/event/EventConstants.java
+/home/stbischof/git/OSGI_MIGRATE/osgi_target/org.osgi.service.event/api/src/main/java/org/osgi/service/event/EventHandler.java
+/home/stbischof/git/OSGI_MIGRATE/osgi_target/org.osgi.service.event/api/src/main/java/org/osgi/service/event/EventProperties.java
+/home/stbischof/git/OSGI_MIGRATE/osgi_target/org.osgi.service.event/api/src/main/java/org/osgi/service/event/TopicPermission.java
+/home/stbischof/git/OSGI_MIGRATE/osgi_target/org.osgi.service.event/api/src/main/java/org/osgi/service/event/annotations/RequireEventAdmin.java
+/home/stbischof/git/OSGI_MIGRATE/osgi_target/org.osgi.service.event/api/src/main/java/org/osgi/service/event/annotations/package-info.java
+/home/stbischof/git/OSGI_MIGRATE/osgi_target/org.osgi.service.event/api/src/main/java/org/osgi/service/event/package-info.java
+/home/stbischof/git/OSGI_MIGRATE/osgi_target/org.osgi.service.event/api/src/main/java/org/osgi/service/event/propertytypes/EventDelivery.java
+/home/stbischof/git/OSGI_MIGRATE/osgi_target/org.osgi.service.event/api/src/main/java/org/osgi/service/event/propertytypes/EventFilter.java
+/home/stbischof/git/OSGI_MIGRATE/osgi_target/org.osgi.service.event/api/src/main/java/org/osgi/service/event/propertytypes/EventTopics.java
+/home/stbischof/git/OSGI_MIGRATE/osgi_target/org.osgi.service.event/api/src/main/java/org/osgi/service/event/propertytypes/package-info.java

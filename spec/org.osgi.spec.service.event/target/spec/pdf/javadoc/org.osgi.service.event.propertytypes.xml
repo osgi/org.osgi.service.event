@@ -1,0 +1,229 @@
+<section xmlns="http://docbook.org/ns/docbook"
+         xreflabel="org.osgi.service.event.propertytypes"
+         version="5"
+         role="package"
+         xml:id="org.osgi.service.event.propertytypes">
+   <title>org.osgi.service.event.propertytypes</title>
+   <info>
+      <releaseinfo xml:id="org.osgi.service.event.propertytypes-version">Version 1.4</releaseinfo>
+      <edition xml:id="org.osgi.service.event.propertytypes-version.number">1.4</edition>
+   </info>
+   <para>
+Event Admin Component Property Types Package Version 1.4.
+ </para>
+   <para>
+ When used as annotations, component property types are processed by tools to
+ generate Component Descriptions which are used at runtime.
+ </para>
+   <para>
+ Bundles wishing to use this package at runtime must list the package in the
+ Import-Package header of the bundle's manifest.
+ </para>
+   <para>
+ Example import for consumers using the API in this package:
+ </para>
+   <para>
+ {@code  Import-Package: org.osgi.service.event.propertytypes; version="[1.4,2.0)"}</para>
+   <section role="summary">
+      <title>Summary</title>
+      <itemizedlist>
+         <listitem>
+            <para>
+               <link linkend="org.osgi.service.event.propertytypes.EventDelivery">
+                  <code>EventDelivery</code>
+               </link> - 
+Component Property Type for the {@link EventConstants#EVENT_DELIVERY} service
+ property of an {@link EventHandler} service.
+   </para>
+         </listitem>
+         <listitem>
+            <para>
+               <link linkend="org.osgi.service.event.propertytypes.EventFilter">
+                  <code>EventFilter</code>
+               </link> - 
+Component Property Type for the {@link EventConstants#EVENT_FILTER} service
+ property of an {@link EventHandler} service.
+   </para>
+         </listitem>
+         <listitem>
+            <para>
+               <link linkend="org.osgi.service.event.propertytypes.EventTopics">
+                  <code>EventTopics</code>
+               </link> - 
+Component Property Type for the {@link EventConstants#EVENT_TOPIC} service
+ property of an {@link EventHandler} service.
+   </para>
+         </listitem>
+      </itemizedlist>
+   </section>
+   <section xreflabel="EventDelivery"
+            role="class"
+            xml:id="org.osgi.service.event.propertytypes.EventDelivery">
+      <title>@EventDelivery</title>
+      <para>
+Component Property Type for the {@link EventConstants#EVENT_DELIVERY} service
+ property of an {@link EventHandler} service.
+ </para>
+      <para>
+ This annotation can be used on an {@link EventHandler} component to declare
+ the value of the {@link EventConstants#EVENT_DELIVERY} service property.</para>
+      <formalpara role="parameter">
+         <title>See Also</title>
+         <para>
+            <code>Component Property Types</code>
+         </para>
+      </formalpara>
+      <formalpara role="parameter">
+         <title>Since</title>
+         <para>@since 1.4</para>
+      </formalpara>
+      <formalpara role="parameter">
+         <title>Retention</title>
+         <para>
+            <code>CLASS</code>
+         </para>
+      </formalpara>
+      <formalpara role="parameter">
+         <title>Target</title>
+         <para>
+            <code>TYPE</code>
+         </para>
+      </formalpara>
+      <section xreflabel="value"
+               role="method"
+               xml:id="org.osgi.service.event.propertytypes.EventDelivery.value--">
+         <title>String[][] value</title>
+         <para role="description">
+Service property specifying the {@code Event} delivery qualities
+ requested by an {@link EventHandler} service.
+ </para>
+         <para>
+ The supported delivery qualities are:
+ </para>
+         <itemizedlist>
+            <listitem>
+               <para>{@link EventConstants#DELIVERY_ASYNC_ORDERED}</para>
+            </listitem>
+            <listitem>
+               <para>{@link EventConstants#DELIVERY_ASYNC_UNORDERED}}</para>
+            </listitem>
+         </itemizedlist>
+         <formalpara role="parameter">
+            <title>Returns</title>
+            <para>The requested event delivery qualities.</para>
+         </formalpara>
+         <formalpara role="parameter">
+            <title>See Also</title>
+            <para>
+               <link linkend="UNRESOLVED">EventConstants.EVENT_DELIVERY</link>
+            </para>
+         </formalpara>
+      </section>
+   </section>
+   <section xreflabel="EventFilter"
+            role="class"
+            xml:id="org.osgi.service.event.propertytypes.EventFilter">
+      <title>@EventFilter</title>
+      <para>
+Component Property Type for the {@link EventConstants#EVENT_FILTER} service
+ property of an {@link EventHandler} service.
+ </para>
+      <para>
+ This annotation can be used on an {@link EventHandler} component to declare
+ the value of the {@link EventConstants#EVENT_FILTER} service property.</para>
+      <formalpara role="parameter">
+         <title>See Also</title>
+         <para>
+            <code>Component Property Types</code>
+         </para>
+      </formalpara>
+      <formalpara role="parameter">
+         <title>Since</title>
+         <para>@since 1.4</para>
+      </formalpara>
+      <formalpara role="parameter">
+         <title>Retention</title>
+         <para>
+            <code>CLASS</code>
+         </para>
+      </formalpara>
+      <formalpara role="parameter">
+         <title>Target</title>
+         <para>
+            <code>TYPE</code>
+         </para>
+      </formalpara>
+      <section xreflabel="value"
+               role="method"
+               xml:id="org.osgi.service.event.propertytypes.EventFilter.value--">
+         <title>String value</title>
+         <para role="description">
+Service property specifying the {@code Event} filter to an
+ {@link EventHandler} service.
+   </para>
+         <formalpara role="parameter">
+            <title>Returns</title>
+            <para>The event filter.</para>
+         </formalpara>
+         <formalpara role="parameter">
+            <title>See Also</title>
+            <para>
+               <link linkend="UNRESOLVED">EventConstants.EVENT_FILTER</link>
+            </para>
+         </formalpara>
+      </section>
+   </section>
+   <section xreflabel="EventTopics"
+            role="class"
+            xml:id="org.osgi.service.event.propertytypes.EventTopics">
+      <title>@EventTopics</title>
+      <para>
+Component Property Type for the {@link EventConstants#EVENT_TOPIC} service
+ property of an {@link EventHandler} service.
+ </para>
+      <para>
+ This annotation can be used on an {@link EventHandler} component to declare
+ the values of the {@link EventConstants#EVENT_TOPIC} service property.</para>
+      <formalpara role="parameter">
+         <title>See Also</title>
+         <para>
+            <code>Component Property Types</code>
+         </para>
+      </formalpara>
+      <formalpara role="parameter">
+         <title>Since</title>
+         <para>@since 1.4</para>
+      </formalpara>
+      <formalpara role="parameter">
+         <title>Retention</title>
+         <para>
+            <code>CLASS</code>
+         </para>
+      </formalpara>
+      <formalpara role="parameter">
+         <title>Target</title>
+         <para>
+            <code>TYPE</code>
+         </para>
+      </formalpara>
+      <section xreflabel="value"
+               role="method"
+               xml:id="org.osgi.service.event.propertytypes.EventTopics.value--">
+         <title>String[][] value</title>
+         <para role="description">
+Service property specifying the {@code Event} topics of interest to an
+ {@link EventHandler} service.
+   </para>
+         <formalpara role="parameter">
+            <title>Returns</title>
+            <para>The event topics.</para>
+         </formalpara>
+         <formalpara role="parameter">
+            <title>See Also</title>
+            <para>
+               <link linkend="UNRESOLVED">EventConstants.EVENT_TOPIC</link>
+            </para>
+         </formalpara>
+      </section>
+   </section>
+</section>

@@ -1,0 +1,1178 @@
+<section xmlns="http://docbook.org/ns/docbook"
+         xreflabel="org.osgi.service.event"
+         version="5"
+         role="package"
+         xml:id="org.osgi.service.event">
+   <title>org.osgi.service.event</title>
+   <info>
+      <releaseinfo xml:id="org.osgi.service.event-version">Version 1.4</releaseinfo>
+      <edition xml:id="org.osgi.service.event-version.number">1.4</edition>
+   </info>
+   <para>
+Event Admin Package Version 1.4.
+ </para>
+   <para>
+ Bundles wishing to use this package must list the package in the
+ Import-Package header of the bundle's manifest. This package has two types of
+ users: the consumers that use the API in this package and the providers that
+ implement the API in this package.
+ </para>
+   <para>
+ Example import for consumers using the API in this package:
+ </para>
+   <para>
+ {@code  Import-Package: org.osgi.service.event; version="[1.4,2.0)"}
+ </para>
+   <para>
+ Example import for providers implementing the API in this package:
+ </para>
+   <para>
+ {@code  Import-Package: org.osgi.service.event; version="[1.4,1.5)"}</para>
+   <section role="summary">
+      <title>Summary</title>
+      <itemizedlist>
+         <listitem>
+            <para>
+               <link linkend="org.osgi.service.event.Event">
+                  <code>Event</code>
+               </link> - 
+An event.
+   </para>
+         </listitem>
+         <listitem>
+            <para>
+               <link linkend="org.osgi.service.event.EventAdmin">
+                  <code>EventAdmin</code>
+               </link> - 
+The Event Admin service.
+   </para>
+         </listitem>
+         <listitem>
+            <para>
+               <link linkend="org.osgi.service.event.EventConstants">
+                  <code>EventConstants</code>
+               </link> - 
+Defines standard names for {@code EventHandler} properties.
+   </para>
+         </listitem>
+         <listitem>
+            <para>
+               <link linkend="org.osgi.service.event.EventHandler">
+                  <code>EventHandler</code>
+               </link> - 
+Listener for Events.
+   </para>
+         </listitem>
+         <listitem>
+            <para>
+               <link linkend="org.osgi.service.event.EventProperties">
+                  <code>EventProperties</code>
+               </link> - 
+The properties for an {@link Event}.
+   </para>
+         </listitem>
+         <listitem>
+            <para>
+               <link linkend="org.osgi.service.event.TopicPermission">
+                  <code>TopicPermission</code>
+               </link> - 
+A bundle's authority to publish or subscribe to event on a topic.
+   </para>
+         </listitem>
+      </itemizedlist>
+   </section>
+   <section xreflabel="Event"
+            role="class"
+            xml:id="org.osgi.service.event.Event">
+      <title>public class Event</title>
+      <para>
+An event.
+ 
+ {@code Event} objects are delivered to {@code EventHandler} services which
+ subscribe to the topic of the event.
+   </para>
+      <formalpara role="parameter">
+         <title>Concurrency</title>
+         <para>Immutable </para>
+      </formalpara>
+      <section xreflabel="Event(String,Map)"
+               role="method"
+               xml:id="org.osgi.service.event.Event.Event-String-Map-">
+         <title>public  Event(String topic, Map&lt;String, ?&gt; properties)</title>
+         <formalpara role="parameter">
+            <title>topic</title>
+            <para>The topic of the event.</para>
+         </formalpara>
+         <formalpara role="parameter">
+            <title>properties</title>
+            <para>The event's properties (may be {@code null}). A
+        property whose key is not of type {@code String} will be ignored.
+        If the specified properties is an {@link EventProperties} object,
+        then it will be directly used. Otherwise, a copy of the specified
+        properties is made.</para>
+         </formalpara>
+         <para role="description">
+Constructs an event.
+   </para>
+         <formalpara role="parameter">
+            <title>Throws</title>
+            <para>
+               <code>IllegalArgumentException</code>– If topic is not a valid topic name.</para>
+         </formalpara>
+         <formalpara role="parameter">
+            <title>Since</title>
+            <para>@since 1.2</para>
+         </formalpara>
+      </section>
+      <section xreflabel="Event(String,Dictionary)"
+               role="method"
+               xml:id="org.osgi.service.event.Event.Event-String-Dictionary-">
+         <title>public  Event(String topic, Dictionary&lt;String, ?&gt; properties)</title>
+         <formalpara role="parameter">
+            <title>topic</title>
+            <para>The topic of the event.</para>
+         </formalpara>
+         <formalpara role="parameter">
+            <title>properties</title>
+            <para>The event's properties (may be {@code null}). A
+        property whose key is not of type {@code String} will be ignored.
+        A copy of the specified properties is made.</para>
+         </formalpara>
+         <para role="description">
+Constructs an event.
+   </para>
+         <formalpara role="parameter">
+            <title>Throws</title>
+            <para>
+               <code>IllegalArgumentException</code>– If topic is not a valid topic name.</para>
+         </formalpara>
+      </section>
+      <section xreflabel="containsProperty(String)"
+               role="method"
+               xml:id="org.osgi.service.event.Event.containsProperty-String-">
+         <title>public final boolean containsProperty(String name)</title>
+         <formalpara role="parameter">
+            <title>name</title>
+            <para>The name of the property.</para>
+         </formalpara>
+         <para role="description">
+Indicate the presence of an event property. The event topic is present
+ using the property name "event.topics".
+   </para>
+         <formalpara role="parameter">
+            <title>Returns</title>
+            <para>{@code true} if a property with the specified name is in the
+         event. This property may have a {@code null} value. {@code false}
+         otherwise.</para>
+         </formalpara>
+         <formalpara role="parameter">
+            <title>Since</title>
+            <para>@since 1.3</para>
+         </formalpara>
+      </section>
+      <section xreflabel="equals(Object)"
+               role="method"
+               xml:id="org.osgi.service.event.Event.equals-Object-">
+         <title>public boolean equals(Object object)</title>
+         <formalpara role="parameter">
+            <title>object</title>
+            <para>The {@code Event} object to be compared.</para>
+         </formalpara>
+         <para role="description">
+Compares this {@code Event} object to another object.
+ 
+ </para>
+         <para>
+ An event is considered to be <emphasis role="strong">equal to</emphasis> another event if the topic
+ is equal and the properties are equal. The properties are compared using
+ the {@code java.util.Map.equals()} rules which includes identity
+ comparison for array values.</para>
+         <formalpara role="parameter">
+            <title>Returns</title>
+            <para>{@code true} if {@code object} is a {@code Event} and is equal to
+         this object; {@code false} otherwise.</para>
+         </formalpara>
+      </section>
+      <section xreflabel="getProperty(String)"
+               role="method"
+               xml:id="org.osgi.service.event.Event.getProperty-String-">
+         <title>public final Object getProperty(String name)</title>
+         <formalpara role="parameter">
+            <title>name</title>
+            <para>The name of the property to retrieve.</para>
+         </formalpara>
+         <para role="description">
+Retrieve the value of an event property. The event topic may be retrieved
+ with the property name "event.topics".
+   </para>
+         <formalpara role="parameter">
+            <title>Returns</title>
+            <para>The value of the property, or {@code null} if not found.</para>
+         </formalpara>
+      </section>
+      <section xreflabel="getPropertyNames()"
+               role="method"
+               xml:id="org.osgi.service.event.Event.getPropertyNames--">
+         <title>public final String[][] getPropertyNames()</title>
+         <para role="description">
+Returns a list of this event's property names. The list will include the
+ event topic property name "event.topics".
+   </para>
+         <formalpara role="parameter">
+            <title>Returns</title>
+            <para>A non-empty array with one element per property.</para>
+         </formalpara>
+      </section>
+      <section xreflabel="getTopic()"
+               role="method"
+               xml:id="org.osgi.service.event.Event.getTopic--">
+         <title>public final String getTopic()</title>
+         <para role="description">
+Returns the topic of this event.
+   </para>
+         <formalpara role="parameter">
+            <title>Returns</title>
+            <para>The topic of this event.</para>
+         </formalpara>
+      </section>
+      <section xreflabel="hashCode()"
+               role="method"
+               xml:id="org.osgi.service.event.Event.hashCode--">
+         <title>public int hashCode()</title>
+         <para role="description">
+Returns a hash code value for this object.
+   </para>
+         <formalpara role="parameter">
+            <title>Returns</title>
+            <para>An integer which is a hash code value for this object.</para>
+         </formalpara>
+      </section>
+      <section xreflabel="matches(Filter)"
+               role="method"
+               xml:id="org.osgi.service.event.Event.matches-Filter-">
+         <title>public final boolean matches(Filter filter)</title>
+         <formalpara role="parameter">
+            <title>filter</title>
+            <para>The filter to test.</para>
+         </formalpara>
+         <para role="description">
+Tests this event's properties against the given filter using a case
+ sensitive match.
+   </para>
+         <formalpara role="parameter">
+            <title>Returns</title>
+            <para>true If this event's properties match the filter, false
+         otherwise.</para>
+         </formalpara>
+      </section>
+      <section xreflabel="toString()"
+               role="method"
+               xml:id="org.osgi.service.event.Event.toString--">
+         <title>public String toString()</title>
+         <para role="description">
+Returns the string representation of this event.
+   </para>
+         <formalpara role="parameter">
+            <title>Returns</title>
+            <para>The string representation of this event.</para>
+         </formalpara>
+      </section>
+   </section>
+   <section xreflabel="EventAdmin"
+            role="class"
+            xml:id="org.osgi.service.event.EventAdmin">
+      <title>public abstract EventAdmin</title>
+      <para>
+The Event Admin service. Bundles wishing to publish events must obtain the
+ Event Admin service and call one of the event delivery methods.
+   </para>
+      <formalpara role="parameter">
+         <title>Concurrency</title>
+         <para>Thread-safe </para>
+      </formalpara>
+      <formalpara role="parameter">
+         <title>Provider Type</title>
+         <para>Consumers of this API must not implement this type</para>
+      </formalpara>
+      <section xreflabel="postEvent(Event)"
+               role="method"
+               xml:id="org.osgi.service.event.EventAdmin.postEvent-Event-">
+         <title>public abstract void postEvent(Event event)</title>
+         <formalpara role="parameter">
+            <title>event</title>
+            <para>The event to send to all listeners which subscribe to the
+        topic of the event.</para>
+         </formalpara>
+         <para role="description">
+Initiate asynchronous, ordered delivery of an event. This method returns
+ to the caller before delivery of the event is completed. Events are
+ delivered in the order that they are received by this method.
+   </para>
+         <formalpara role="parameter">
+            <title>Throws</title>
+            <para>
+               <code>SecurityException</code>– If the caller does not have
+         {@code TopicPermission[topic,PUBLISH]} for the topic specified in
+         the event.</para>
+         </formalpara>
+      </section>
+      <section xreflabel="sendEvent(Event)"
+               role="method"
+               xml:id="org.osgi.service.event.EventAdmin.sendEvent-Event-">
+         <title>public abstract void sendEvent(Event event)</title>
+         <formalpara role="parameter">
+            <title>event</title>
+            <para>The event to send to all listeners which subscribe to the
+        topic of the event.</para>
+         </formalpara>
+         <para role="description">
+Initiate synchronous delivery of an event. This method does not return to
+ the caller until delivery of the event is completed.
+   </para>
+         <formalpara role="parameter">
+            <title>Throws</title>
+            <para>
+               <code>SecurityException</code>– If the caller does not have
+         {@code TopicPermission[topic,PUBLISH]} for the topic specified in
+         the event.</para>
+         </formalpara>
+      </section>
+   </section>
+   <section xreflabel="EventConstants"
+            role="class"
+            xml:id="org.osgi.service.event.EventConstants">
+      <title>public abstract EventConstants</title>
+      <para>
+Defines standard names for {@code EventHandler} properties.
+   </para>
+      <formalpara role="parameter">
+         <title>Provider Type</title>
+         <para>Consumers of this API must not implement this type</para>
+      </formalpara>
+      <section xreflabel="BUNDLE"
+               role="field"
+               xml:id="org.osgi.service.event.EventConstants.BUNDLE">
+         <title>public static final String BUNDLE = "bundle"</title>
+         <para>
+The Bundle object of the bundle relevant to the event. The type of the
+ value for this event property is {@link Bundle}.
+   </para>
+         <formalpara role="parameter">
+            <title>Since</title>
+            <para>@since 1.1</para>
+         </formalpara>
+      </section>
+      <section xreflabel="BUNDLE_ID"
+               role="field"
+               xml:id="org.osgi.service.event.EventConstants.BUNDLE_ID">
+         <title>public static final String BUNDLE_ID = "bundle.id"</title>
+         <para>
+The Bundle id of the bundle relevant to the event. The type of the value
+ for this event property is {@code Long}.
+   </para>
+         <formalpara role="parameter">
+            <title>Since</title>
+            <para>@since 1.1</para>
+         </formalpara>
+      </section>
+      <section xreflabel="BUNDLE_SIGNER"
+               role="field"
+               xml:id="org.osgi.service.event.EventConstants.BUNDLE_SIGNER">
+         <title>public static final String BUNDLE_SIGNER = "bundle.signer"</title>
+         <para>
+The Distinguished Names of the signers of the bundle relevant to the
+ event. The type of the value for this event property is {@code String} or
+ {@code Collection} of {@code String}.
+   </para>
+      </section>
+      <section xreflabel="BUNDLE_SYMBOLICNAME"
+               role="field"
+               xml:id="org.osgi.service.event.EventConstants.BUNDLE_SYMBOLICNAME">
+         <title>public static final String BUNDLE_SYMBOLICNAME = "bundle.symbolicName"</title>
+         <para>
+The Bundle Symbolic Name of the bundle relevant to the event. The type of
+ the value for this event property is {@code String}.
+   </para>
+      </section>
+      <section xreflabel="BUNDLE_VERSION"
+               role="field"
+               xml:id="org.osgi.service.event.EventConstants.BUNDLE_VERSION">
+         <title>public static final String BUNDLE_VERSION = "bundle.version"</title>
+         <para>
+The version of the bundle relevant to the event. The type of the value
+ for this event property is {@link Version}.
+   </para>
+         <formalpara role="parameter">
+            <title>Since</title>
+            <para>@since 1.2</para>
+         </formalpara>
+      </section>
+      <section xreflabel="DELIVERY_ASYNC_ORDERED"
+               role="field"
+               xml:id="org.osgi.service.event.EventConstants.DELIVERY_ASYNC_ORDERED">
+         <title>public static final String DELIVERY_ASYNC_ORDERED = "async.ordered"</title>
+         <para>
+Event Handler delivery quality value specifying the Event Handler
+ requires asynchronously delivered events be delivered in order. Ordered
+ delivery is the default for asynchronously delivered events.
+ 
+ </para>
+         <para>
+ This delivery quality value is mutually exclusive with
+ {@link #DELIVERY_ASYNC_UNORDERED}. However, if both this value and
+ {@link #DELIVERY_ASYNC_UNORDERED} are specified for an event handler,
+ this value takes precedence.</para>
+         <formalpara role="parameter">
+            <title>See Also</title>
+            <para>
+               <link linkend="UNRESOLVED">EVENT_DELIVERY</link>
+            </para>
+         </formalpara>
+         <formalpara role="parameter">
+            <title>Since</title>
+            <para>@since 1.3</para>
+         </formalpara>
+      </section>
+      <section xreflabel="DELIVERY_ASYNC_UNORDERED"
+               role="field"
+               xml:id="org.osgi.service.event.EventConstants.DELIVERY_ASYNC_UNORDERED">
+         <title>public static final String DELIVERY_ASYNC_UNORDERED = "async.unordered"</title>
+         <para>
+Event Handler delivery quality value specifying the Event Handler does
+ not require asynchronously delivered events be delivered in order. This
+ may allow an Event Admin implementation to optimize asynchronous event
+ delivery by relaxing ordering requirements.
+ 
+ </para>
+         <para>
+ This delivery quality value is mutually exclusive with
+ {@link #DELIVERY_ASYNC_ORDERED}. However, if both this value and
+ {@link #DELIVERY_ASYNC_ORDERED} are specified for an event handler,
+ {@link #DELIVERY_ASYNC_ORDERED} takes precedence.</para>
+         <formalpara role="parameter">
+            <title>See Also</title>
+            <para>
+               <link linkend="UNRESOLVED">EVENT_DELIVERY</link>
+            </para>
+         </formalpara>
+         <formalpara role="parameter">
+            <title>Since</title>
+            <para>@since 1.3</para>
+         </formalpara>
+      </section>
+      <section xreflabel="EVENT"
+               role="field"
+               xml:id="org.osgi.service.event.EventConstants.EVENT">
+         <title>public static final String EVENT = "event"</title>
+         <para>
+The forwarded event object. Used when rebroadcasting an event that was
+ sent via some other event mechanism. The type of the value for this event
+ property is {@code Object}.
+   </para>
+      </section>
+      <section xreflabel="EVENT_ADMIN_IMPLEMENTATION"
+               role="field"
+               xml:id="org.osgi.service.event.EventConstants.EVENT_ADMIN_IMPLEMENTATION">
+         <title>public static final String EVENT_ADMIN_IMPLEMENTATION = "osgi.event"</title>
+         <para>
+The name of the implementation capability for the Event Admin
+ specification
+   </para>
+         <formalpara role="parameter">
+            <title>Since</title>
+            <para>@since 1.4</para>
+         </formalpara>
+      </section>
+      <section xreflabel="EVENT_ADMIN_SPECIFICATION_VERSION"
+               role="field"
+               xml:id="org.osgi.service.event.EventConstants.EVENT_ADMIN_SPECIFICATION_VERSION">
+         <title>public static final String EVENT_ADMIN_SPECIFICATION_VERSION = "1.4"</title>
+         <para>
+The version of the implementation capability for the Event Admin
+ specification
+   </para>
+         <formalpara role="parameter">
+            <title>Since</title>
+            <para>@since 1.4</para>
+         </formalpara>
+      </section>
+      <section xreflabel="EVENT_DELIVERY"
+               role="field"
+               xml:id="org.osgi.service.event.EventConstants.EVENT_DELIVERY">
+         <title>public static final String EVENT_DELIVERY = "event.delivery"</title>
+         <para>
+Service Registration property specifying the delivery qualities requested
+ by an Event Handler service.
+ </para>
+         <para>
+ Event handlers MAY be registered with this property. Each value of this
+ property is a string specifying a delivery quality for the Event handler.
+ 
+ </para>
+         <para>
+ The value of this property must be of type {@code String},
+ {@code String[]}, or {@code Collection&lt;String&gt;}.</para>
+         <formalpara role="parameter">
+            <title>See Also</title>
+            <para>
+               <link linkend="UNRESOLVED">DELIVERY_ASYNC_ORDERED</link>, <link linkend="UNRESOLVED">DELIVERY_ASYNC_UNORDERED</link>
+            </para>
+         </formalpara>
+         <formalpara role="parameter">
+            <title>Since</title>
+            <para>@since 1.3</para>
+         </formalpara>
+      </section>
+      <section xreflabel="EVENT_FILTER"
+               role="field"
+               xml:id="org.osgi.service.event.EventConstants.EVENT_FILTER">
+         <title>public static final String EVENT_FILTER = "event.filter"</title>
+         <para>
+Service Registration property specifying a filter to further select
+ {@code Event} s of interest to an Event Handler service.
+ </para>
+         <para>
+ Event handlers MAY be registered with this property. The value of this
+ property is a string containing an LDAP-style filter specification. Any
+ of the event's properties may be used in the filter expression. Each
+ event handler is notified for any event which belongs to the topics in
+ which the handler has expressed an interest. If the event handler is also
+ registered with this service property, then the properties of the event
+ must also match the filter for the event to be delivered to the event
+ handler.
+ </para>
+         <para>
+ If the filter syntax is invalid, then the Event Handler must be ignored
+ and a warning should be logged.
+ 
+ </para>
+         <para>
+ The value of this property must be of type {@code String}.</para>
+         <formalpara role="parameter">
+            <title>See Also</title>
+            <para>
+               <link linkend="org.osgi.service.event.Event">Event</link>, <link linkend="UNRESOLVED">Filter</link>
+            </para>
+         </formalpara>
+      </section>
+      <section xreflabel="EVENT_TOPIC"
+               role="field"
+               xml:id="org.osgi.service.event.EventConstants.EVENT_TOPIC">
+         <title>public static final String EVENT_TOPIC = "event.topics"</title>
+         <para>
+Service registration property specifying the {@code Event} topics of
+ interest to an Event Handler service.
+ </para>
+         <para>
+ Event handlers SHOULD be registered with this property. Each value of
+ this property is a string that describe the topics in which the handler
+ is interested. An asterisk ('*') may be used as a trailing wildcard.
+ Event Handlers which do not have a value for this property must not
+ receive events. More precisely, the value of each string must conform to
+ the following grammar:
+ 
+ </para>
+         <programlisting>  topic-description := '*' | topic ( '/*' )?
+  topic := token ( '/' token )*</programlisting>
+         <para>
+ The value of this property must be of type {@code String},
+ {@code String[]}, or {@code Collection&lt;String&gt;}.</para>
+         <formalpara role="parameter">
+            <title>See Also</title>
+            <para>
+               <link linkend="org.osgi.service.event.Event">Event</link>
+            </para>
+         </formalpara>
+      </section>
+      <section xreflabel="EXCEPTION"
+               role="field"
+               xml:id="org.osgi.service.event.EventConstants.EXCEPTION">
+         <title>public static final String EXCEPTION = "exception"</title>
+         <para>
+An exception or error. The type of the value for this event property is
+ {@code Throwable}.
+   </para>
+      </section>
+      <section xreflabel="EXCEPTION_CLASS"
+               role="field"
+               xml:id="org.osgi.service.event.EventConstants.EXCEPTION_CLASS">
+         <title>public static final String EXCEPTION_CLASS = "exception.class"</title>
+         <para>
+The name of the exception type. Must be equal to the name of the class of
+ the exception in the event property {@link #EXCEPTION}. The type of the
+ value for this event property is {@code String}.
+   </para>
+         <formalpara role="parameter">
+            <title>Since</title>
+            <para>@since 1.1</para>
+         </formalpara>
+      </section>
+      <section xreflabel="EXCEPTION_MESSAGE"
+               role="field"
+               xml:id="org.osgi.service.event.EventConstants.EXCEPTION_MESSAGE">
+         <title>public static final String EXCEPTION_MESSAGE = "exception.message"</title>
+         <para>
+The exception message. Must be equal to the result of calling
+ {@code getMessage()} on the exception in the event property
+ {@link #EXCEPTION}. The type of the value for this event property is
+ {@code String}.
+   </para>
+      </section>
+      <section xreflabel="EXECPTION_CLASS"
+               role="field"
+               xml:id="org.osgi.service.event.EventConstants.EXECPTION_CLASS">
+         <title>public static final String EXECPTION_CLASS = "exception.class"</title>
+         <para>
+This constant was released with an incorrectly spelled name. It has been
+ replaced by {@link #EXCEPTION_CLASS}
+   </para>
+         <formalpara role="parameter">
+            <title>Deprecated</title>
+            <para>@deprecated As of 1.1. Replaced by {@link #EXCEPTION_CLASS}.</para>
+         </formalpara>
+      </section>
+      <section xreflabel="MESSAGE"
+               role="field"
+               xml:id="org.osgi.service.event.EventConstants.MESSAGE">
+         <title>public static final String MESSAGE = "message"</title>
+         <para>
+A human-readable message that is usually not localized. The type of the
+ value for this event property is {@code String}.
+   </para>
+      </section>
+      <section xreflabel="SERVICE"
+               role="field"
+               xml:id="org.osgi.service.event.EventConstants.SERVICE">
+         <title>public static final String SERVICE = "service"</title>
+         <para>
+A service reference. The type of the value for this event property is
+ {@link ServiceReference}.
+   </para>
+      </section>
+      <section xreflabel="SERVICE_ID"
+               role="field"
+               xml:id="org.osgi.service.event.EventConstants.SERVICE_ID">
+         <title>public static final String SERVICE_ID = "service.id"</title>
+         <para>
+A service's id. The type of the value for this event property is
+ {@code Long}.
+   </para>
+      </section>
+      <section xreflabel="SERVICE_OBJECTCLASS"
+               role="field"
+               xml:id="org.osgi.service.event.EventConstants.SERVICE_OBJECTCLASS">
+         <title>public static final String SERVICE_OBJECTCLASS = "service.objectClass"</title>
+         <para>
+A service's objectClass. The type of the value for this event property is
+ {@code String[]}.
+   </para>
+      </section>
+      <section xreflabel="SERVICE_PID"
+               role="field"
+               xml:id="org.osgi.service.event.EventConstants.SERVICE_PID">
+         <title>public static final String SERVICE_PID = "service.pid"</title>
+         <para>
+A service's persistent identity. The type of the value for this event
+ property is {@code String} or {@code Collection} of {@code String}.
+   </para>
+      </section>
+      <section xreflabel="TIMESTAMP"
+               role="field"
+               xml:id="org.osgi.service.event.EventConstants.TIMESTAMP">
+         <title>public static final String TIMESTAMP = "timestamp"</title>
+         <para>
+The time when the event occurred, as reported by
+ {@code System.currentTimeMillis()}. The type of the value for this event
+ property is {@code Long}.
+   </para>
+      </section>
+   </section>
+   <section xreflabel="EventHandler"
+            role="class"
+            xml:id="org.osgi.service.event.EventHandler">
+      <title>public abstract EventHandler</title>
+      <para>
+Listener for Events.
+ 
+ </para>
+      <para>
+ {@code EventHandler} objects are registered with the Framework service
+ registry and are notified with an {@code Event} object when an event is sent
+ or posted.
+ </para>
+      <para>
+ {@code EventHandler} objects can inspect the received {@code Event} object to
+ determine its topic and properties.
+ 
+ </para>
+      <para>
+ {@code EventHandler} objects must be registered with a service property
+ {@link EventConstants#EVENT_TOPIC} whose value is the list of topics in which
+ the event handler is interested.
+ </para>
+      <para>
+ For example:
+ 
+ </para>
+      <programlisting> String[] topics = new String[] {"com/isv/*"};
+ Hashtable ht = new Hashtable();
+ ht.put(EventConstants.EVENT_TOPIC, topics);
+ context.registerService(EventHandler.class.getName(), this, ht);</programlisting>
+      <para>
+ 
+ Event Handler services can also be registered with an
+ {@link EventConstants#EVENT_FILTER} service property to further filter the
+ events. If the syntax of this filter is invalid, then the Event Handler must
+ be ignored by the Event Admin service. The Event Admin service should log a
+ warning.
+ </para>
+      <para>
+ Security Considerations. Bundles wishing to monitor {@code Event} objects
+ will require {@code ServicePermission[EventHandler,REGISTER]} to register an
+ {@code EventHandler} service. The bundle must also have
+ {@code TopicPermission[topic,SUBSCRIBE]} for the topic specified in the event
+ in order to receive the event.</para>
+      <formalpara role="parameter">
+         <title>See Also</title>
+         <para>
+            <link linkend="org.osgi.service.event.Event">Event</link>
+         </para>
+      </formalpara>
+      <formalpara role="parameter">
+         <title>Concurrency</title>
+         <para>Thread-safe </para>
+      </formalpara>
+      <section xreflabel="handleEvent(Event)"
+               role="method"
+               xml:id="org.osgi.service.event.EventHandler.handleEvent-Event-">
+         <title>public abstract void handleEvent(Event event)</title>
+         <formalpara role="parameter">
+            <title>event</title>
+            <para>The event that occurred.</para>
+         </formalpara>
+         <para role="description">
+Called by the {@link EventAdmin} service to notify the listener of an
+ event.
+   </para>
+      </section>
+   </section>
+   <section xreflabel="EventProperties"
+            role="class"
+            xml:id="org.osgi.service.event.EventProperties">
+      <title>public class EventProperties<?line-break?> implements Map&lt;String, Object&gt;</title>
+      <para>
+The properties for an {@link Event}. An event source can create an
+ EventProperties object if it needs to reuse the same event properties for
+ multiple events.
+ 
+ </para>
+      <para>
+ The keys are all of type {@code String}. The values are of type
+ {@code Object}. The key "event.topics" is ignored as event topics
+ can only be set when an {@link Event} is constructed.
+ 
+ </para>
+      <para>
+ Once constructed, an EventProperties object is unmodifiable. However, the
+ values of the map used to construct an EventProperties object are still
+ subject to modification as they are not deeply copied.</para>
+      <formalpara role="parameter">
+         <title>Since</title>
+         <para>@since 1.3</para>
+      </formalpara>
+      <formalpara role="parameter">
+         <title>Concurrency</title>
+         <para>Immutable </para>
+      </formalpara>
+      <section xreflabel="EventProperties(Map)"
+               role="method"
+               xml:id="org.osgi.service.event.EventProperties.EventProperties-Map-">
+         <title>public  EventProperties(Map&lt;String, ?&gt; properties)</title>
+         <formalpara role="parameter">
+            <title>properties</title>
+            <para>The properties to use for this EventProperties object
+        (may be {@code null}).</para>
+         </formalpara>
+         <para role="description">
+Create an EventProperties from the specified properties.
+ 
+ </para>
+         <para>
+ The specified properties will be copied into this EventProperties.
+ Properties whose key is not of type {@code String} will be ignored. A
+ property with the key "event.topics" will be ignored.</para>
+      </section>
+      <section xreflabel="clear()"
+               role="method"
+               xml:id="org.osgi.service.event.EventProperties.clear--">
+         <title>public void clear()</title>
+         <para role="description">
+This method throws {@link UnsupportedOperationException}.
+   </para>
+         <formalpara role="parameter">
+            <title>Throws</title>
+            <para>
+               <code>UnsupportedOperationException</code>– if called.</para>
+         </formalpara>
+      </section>
+      <section xreflabel="containsKey(Object)"
+               role="method"
+               xml:id="org.osgi.service.event.EventProperties.containsKey-Object-">
+         <title>public boolean containsKey(Object name)</title>
+         <formalpara role="parameter">
+            <title>name</title>
+            <para>The property name.</para>
+         </formalpara>
+         <para role="description">
+Indicates if the specified property is present.
+   </para>
+         <formalpara role="parameter">
+            <title>Returns</title>
+            <para>{@code true} If the property is present, {@code false} otherwise.</para>
+         </formalpara>
+      </section>
+      <section xreflabel="containsValue(Object)"
+               role="method"
+               xml:id="org.osgi.service.event.EventProperties.containsValue-Object-">
+         <title>public boolean containsValue(Object value)</title>
+         <formalpara role="parameter">
+            <title>value</title>
+            <para>The property value.</para>
+         </formalpara>
+         <para role="description">
+Indicates if the specified value is present.
+   </para>
+         <formalpara role="parameter">
+            <title>Returns</title>
+            <para>{@code true} If the value is present, {@code false} otherwise.</para>
+         </formalpara>
+      </section>
+      <section xreflabel="entrySet()"
+               role="method"
+               xml:id="org.osgi.service.event.EventProperties.entrySet--">
+         <title>public Set&lt;Entry&lt;String, Object&gt;&gt; entrySet()</title>
+         <para role="description">
+Return the property entries.
+   </para>
+         <formalpara role="parameter">
+            <title>Returns</title>
+            <para>A set containing the property name/value pairs.</para>
+         </formalpara>
+      </section>
+      <section xreflabel="equals(Object)"
+               role="method"
+               xml:id="org.osgi.service.event.EventProperties.equals-Object-">
+         <title>public boolean equals(Object object)</title>
+         <formalpara role="parameter">
+            <title>object</title>
+            <para>The {@code EventProperties} object to be compared.</para>
+         </formalpara>
+         <para role="description">
+Compares this {@code EventProperties} object to another object.
+ 
+ </para>
+         <para>
+ The properties are compared using the {@code java.util.Map.equals()}
+ rules which includes identity comparison for array values.</para>
+         <formalpara role="parameter">
+            <title>Returns</title>
+            <para>{@code true} if {@code object} is a {@code EventProperties} and
+         is equal to this object; {@code false} otherwise.</para>
+         </formalpara>
+      </section>
+      <section xreflabel="get(Object)"
+               role="method"
+               xml:id="org.osgi.service.event.EventProperties.get-Object-">
+         <title>public Object get(Object name)</title>
+         <formalpara role="parameter">
+            <title>name</title>
+            <para>The name of the specified property.</para>
+         </formalpara>
+         <para role="description">
+Return the value of the specified property.
+   </para>
+         <formalpara role="parameter">
+            <title>Returns</title>
+            <para>The value of the specified property.</para>
+         </formalpara>
+      </section>
+      <section xreflabel="hashCode()"
+               role="method"
+               xml:id="org.osgi.service.event.EventProperties.hashCode--">
+         <title>public int hashCode()</title>
+         <para role="description">
+Returns a hash code value for this object.
+   </para>
+         <formalpara role="parameter">
+            <title>Returns</title>
+            <para>An integer which is a hash code value for this object.</para>
+         </formalpara>
+      </section>
+      <section xreflabel="isEmpty()"
+               role="method"
+               xml:id="org.osgi.service.event.EventProperties.isEmpty--">
+         <title>public boolean isEmpty()</title>
+         <para role="description">
+Indicate if this properties is empty.
+   </para>
+         <formalpara role="parameter">
+            <title>Returns</title>
+            <para>{@code true} If this properties is empty, {@code false}
+         otherwise.</para>
+         </formalpara>
+      </section>
+      <section xreflabel="keySet()"
+               role="method"
+               xml:id="org.osgi.service.event.EventProperties.keySet--">
+         <title>public Set&lt;String&gt; keySet()</title>
+         <para role="description">
+Return the names of the properties.
+   </para>
+         <formalpara role="parameter">
+            <title>Returns</title>
+            <para>The names of the properties.</para>
+         </formalpara>
+      </section>
+      <section xreflabel="put(String,Object)"
+               role="method"
+               xml:id="org.osgi.service.event.EventProperties.put-String-Object-">
+         <title>public Object put(String key, Object value)</title>
+         <para role="description">
+This method throws {@link UnsupportedOperationException}.
+   </para>
+         <formalpara role="parameter">
+            <title>Throws</title>
+            <para>
+               <code>UnsupportedOperationException</code>– if called.</para>
+         </formalpara>
+      </section>
+      <section xreflabel="putAll(Map)"
+               role="method"
+               xml:id="org.osgi.service.event.EventProperties.putAll-Map-">
+         <title>public void putAll(Map&lt;? extends String, ? extends Object&gt; map)</title>
+         <para role="description">
+This method throws {@link UnsupportedOperationException}.
+   </para>
+         <formalpara role="parameter">
+            <title>Throws</title>
+            <para>
+               <code>UnsupportedOperationException</code>– if called.</para>
+         </formalpara>
+      </section>
+      <section xreflabel="remove(Object)"
+               role="method"
+               xml:id="org.osgi.service.event.EventProperties.remove-Object-">
+         <title>public Object remove(Object key)</title>
+         <para role="description">
+This method throws {@link UnsupportedOperationException}.
+   </para>
+         <formalpara role="parameter">
+            <title>Throws</title>
+            <para>
+               <code>UnsupportedOperationException</code>– if called.</para>
+         </formalpara>
+      </section>
+      <section xreflabel="size()"
+               role="method"
+               xml:id="org.osgi.service.event.EventProperties.size--">
+         <title>public int size()</title>
+         <para role="description">
+Return the number of properties.
+   </para>
+         <formalpara role="parameter">
+            <title>Returns</title>
+            <para>The number of properties.</para>
+         </formalpara>
+      </section>
+      <section xreflabel="toString()"
+               role="method"
+               xml:id="org.osgi.service.event.EventProperties.toString--">
+         <title>public String toString()</title>
+         <para role="description">
+Returns the string representation of this object.
+   </para>
+         <formalpara role="parameter">
+            <title>Returns</title>
+            <para>The string representation of this object.</para>
+         </formalpara>
+      </section>
+      <section xreflabel="values()"
+               role="method"
+               xml:id="org.osgi.service.event.EventProperties.values--">
+         <title>public Collection&lt;Object&gt; values()</title>
+         <para role="description">
+Return the properties values.
+   </para>
+         <formalpara role="parameter">
+            <title>Returns</title>
+            <para>The values of the properties.</para>
+         </formalpara>
+      </section>
+   </section>
+   <section xreflabel="TopicPermission"
+            role="class"
+            xml:id="org.osgi.service.event.TopicPermission">
+      <title>public final class TopicPermission<?line-break?> extends Permission</title>
+      <para>
+A bundle's authority to publish or subscribe to event on a topic.
+ 
+ </para>
+      <para>
+ A topic is a slash-separated string that defines a topic.
+ </para>
+      <para>
+ For example:
+ 
+ </para>
+      <programlisting> org/osgi/service/foo/FooEvent/ACTION</programlisting>
+      <para>
+ {@code TopicPermission} has two actions: {@code publish} and
+ {@code subscribe}.</para>
+      <formalpara role="parameter">
+         <title>Concurrency</title>
+         <para>Thread-safe </para>
+      </formalpara>
+      <section xreflabel="PUBLISH"
+               role="field"
+               xml:id="org.osgi.service.event.TopicPermission.PUBLISH">
+         <title>public static final String PUBLISH = "publish"</title>
+         <para>
+The action string {@code publish}.
+   </para>
+      </section>
+      <section xreflabel="SUBSCRIBE"
+               role="field"
+               xml:id="org.osgi.service.event.TopicPermission.SUBSCRIBE">
+         <title>public static final String SUBSCRIBE = "subscribe"</title>
+         <para>
+The action string {@code subscribe}.
+   </para>
+      </section>
+      <section xreflabel="TopicPermission(String,String)"
+               role="method"
+               xml:id="org.osgi.service.event.TopicPermission.TopicPermission-String-String-">
+         <title>public  TopicPermission(String name, String actions)</title>
+         <formalpara role="parameter">
+            <title>name</title>
+            <para>Topic name.</para>
+         </formalpara>
+         <formalpara role="parameter">
+            <title>actions</title>
+            <para>{@code publish},{@code subscribe} (canonical order).</para>
+         </formalpara>
+         <para role="description">
+Defines the authority to publish and/or subscribe to a topic within the
+ EventAdmin service.
+ </para>
+         <para>
+ The name is specified as a slash-separated string. Wildcards may be used.
+ For example:
+ 
+ </para>
+         <programlisting>    org/osgi/service/fooFooEvent/ACTION
+    com/isv/*
+    *</programlisting>
+         <para>
+ A bundle that needs to publish events on a topic must have the
+ appropriate {@code TopicPermission} for that topic; similarly, a bundle
+ that needs to subscribe to events on a topic must have the appropriate
+ {@code TopicPermssion} for that topic.
+ </para>
+         <para/>
+      </section>
+      <section xreflabel="equals(Object)"
+               role="method"
+               xml:id="org.osgi.service.event.TopicPermission.equals-Object-">
+         <title>public boolean equals(Object obj)</title>
+         <formalpara role="parameter">
+            <title>obj</title>
+            <para>The object to test for equality with this
+        {@code TopicPermission} object.</para>
+         </formalpara>
+         <para role="description">
+Determines the equality of two {@code TopicPermission} objects.
+ 
+ This method checks that specified {@code TopicPermission} has the same
+ topic name and actions as this {@code TopicPermission} object.
+   </para>
+         <formalpara role="parameter">
+            <title>Returns</title>
+            <para>{@code true} if {@code obj} is a {@code TopicPermission}, and has
+         the same topic name and actions as this {@code TopicPermission}
+         object; {@code false} otherwise.</para>
+         </formalpara>
+      </section>
+      <section xreflabel="getActions()"
+               role="method"
+               xml:id="org.osgi.service.event.TopicPermission.getActions--">
+         <title>public String getActions()</title>
+         <para role="description">
+Returns the canonical string representation of the
+ {@code TopicPermission} actions.
+ 
+ </para>
+         <para>
+ Always returns present {@code TopicPermission} actions in the following
+ order: {@code publish},{@code subscribe}.</para>
+         <formalpara role="parameter">
+            <title>Returns</title>
+            <para>Canonical string representation of the {@code TopicPermission}
+         actions.</para>
+         </formalpara>
+      </section>
+      <section xreflabel="hashCode()"
+               role="method"
+               xml:id="org.osgi.service.event.TopicPermission.hashCode--">
+         <title>public int hashCode()</title>
+         <para role="description">
+Returns the hash code value for this object.
+   </para>
+         <formalpara role="parameter">
+            <title>Returns</title>
+            <para>A hash code value for this object.</para>
+         </formalpara>
+      </section>
+      <section xreflabel="implies(Permission)"
+               role="method"
+               xml:id="org.osgi.service.event.TopicPermission.implies-Permission-">
+         <title>public boolean implies(Permission p)</title>
+         <formalpara role="parameter">
+            <title>p</title>
+            <para>The target permission to interrogate.</para>
+         </formalpara>
+         <para role="description">
+Determines if the specified permission is implied by this object.
+ 
+ </para>
+         <para>
+ This method checks that the topic name of the target is implied by the
+ topic name of this object. The list of {@code TopicPermission} actions
+ must either match or allow for the list of the target object to imply the
+ target {@code TopicPermission} action.
+ 
+ </para>
+         <programlisting>    x/y/*,"publish" -&gt; x/y/z,"publish" is true
+    *,"subscribe" -&gt; x/y,"subscribe"   is true
+    *,"publish" -&gt; x/y,"subscribe"     is false
+    x/y,"publish" -&gt; x/y/z,"publish"   is false</programlisting>
+         <formalpara role="parameter">
+            <title>Returns</title>
+            <para>{@code true} if the specified {@code TopicPermission} action is
+         implied by this object; {@code false} otherwise.</para>
+         </formalpara>
+      </section>
+      <section xreflabel="newPermissionCollection()"
+               role="method"
+               xml:id="org.osgi.service.event.TopicPermission.newPermissionCollection--">
+         <title>public PermissionCollection newPermissionCollection()</title>
+         <para role="description">
+Returns a new {@code PermissionCollection} object suitable for storing
+ {@code TopicPermission} objects.
+   </para>
+         <formalpara role="parameter">
+            <title>Returns</title>
+            <para>A new {@code PermissionCollection} object.</para>
+         </formalpara>
+      </section>
+   </section>
+</section>

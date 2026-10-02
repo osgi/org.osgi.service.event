@@ -1,0 +1,9 @@
+org/osgi/test/cases/event/junit/EventTests.class
+org/osgi/test/cases/event/junit/CapabilitiesTestCase.class
+org/osgi/test/cases/event/tb2/Activator.class
+org/osgi/test/cases/event/service/TBCService.class
+org/osgi/test/cases/event/tb1/Activator.class
+org/osgi/test/cases/event/junit/EventAdminTests.class
+org/osgi/test/cases/event/junit/SignatureTestCase.class
+org/osgi/test/cases/event/junit/EventAdminTests$MultiThread.class
+org/osgi/test/cases/event/junit/TopicPermissionTests.class
