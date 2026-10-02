@@ -1,0 +1,5 @@
+/home/stbischof/git/OSGI_MIGRATE/osgi_target/org.osgi.service.event/tck/org.osgi.test.cases.event.secure/src/main/java/org/osgi/test/cases/event/secure/junit/EventAdminTests.java
+/home/stbischof/git/OSGI_MIGRATE/osgi_target/org.osgi.service.event/tck/org.osgi.test.cases.event.secure/src/main/java/org/osgi/test/cases/event/secure/service/ReceiverService.java
+/home/stbischof/git/OSGI_MIGRATE/osgi_target/org.osgi.service.event/tck/org.osgi.test.cases.event.secure/src/main/java/org/osgi/test/cases/event/secure/service/SenderService.java
+/home/stbischof/git/OSGI_MIGRATE/osgi_target/org.osgi.service.event/tck/org.osgi.test.cases.event.secure/src/main/java/org/osgi/test/cases/event/secure/tb1/Activator.java
+/home/stbischof/git/OSGI_MIGRATE/osgi_target/org.osgi.service.event/tck/org.osgi.test.cases.event.secure/src/main/java/org/osgi/test/cases/event/secure/tb2/Activator.java

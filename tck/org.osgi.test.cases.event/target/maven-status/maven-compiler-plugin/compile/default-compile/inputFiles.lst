@@ -1,0 +1,8 @@
+/home/stbischof/git/OSGI_MIGRATE/osgi_target/org.osgi.service.event/tck/org.osgi.test.cases.event/src/main/java/org/osgi/test/cases/event/junit/CapabilitiesTestCase.java
+/home/stbischof/git/OSGI_MIGRATE/osgi_target/org.osgi.service.event/tck/org.osgi.test.cases.event/src/main/java/org/osgi/test/cases/event/junit/EventAdminTests.java
+/home/stbischof/git/OSGI_MIGRATE/osgi_target/org.osgi.service.event/tck/org.osgi.test.cases.event/src/main/java/org/osgi/test/cases/event/junit/EventTests.java
+/home/stbischof/git/OSGI_MIGRATE/osgi_target/org.osgi.service.event/tck/org.osgi.test.cases.event/src/main/java/org/osgi/test/cases/event/junit/SignatureTestCase.java
+/home/stbischof/git/OSGI_MIGRATE/osgi_target/org.osgi.service.event/tck/org.osgi.test.cases.event/src/main/java/org/osgi/test/cases/event/junit/TopicPermissionTests.java
+/home/stbischof/git/OSGI_MIGRATE/osgi_target/org.osgi.service.event/tck/org.osgi.test.cases.event/src/main/java/org/osgi/test/cases/event/service/TBCService.java
+/home/stbischof/git/OSGI_MIGRATE/osgi_target/org.osgi.service.event/tck/org.osgi.test.cases.event/src/main/java/org/osgi/test/cases/event/tb1/Activator.java
+/home/stbischof/git/OSGI_MIGRATE/osgi_target/org.osgi.service.event/tck/org.osgi.test.cases.event/src/main/java/org/osgi/test/cases/event/tb2/Activator.java

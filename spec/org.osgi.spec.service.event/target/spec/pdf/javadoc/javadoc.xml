@@ -1,0 +1,1269 @@
+<?xml version='1.0' encoding='utf-8'?>
+<top>
+  <package name='org.osgi.service.event' fqn='org.osgi.service.event' qn='org.osgi.service.event'>
+<org.osgi.annotation.versioning.Version><value>1.4</value>
+</org.osgi.annotation.versioning.Version>
+   <lead>
+Event Admin Package Version 1.4.
+   </lead>
+   <description>
+Event Admin Package Version 1.4.
+ <p>
+ Bundles wishing to use this package must list the package in the
+ Import-Package header of the bundle's manifest. This package has two types of
+ users: the consumers that use the API in this package and the providers that
+ implement the API in this package.
+ </p><p>
+ Example import for consumers using the API in this package:
+ </p><p>
+ {@code  Import-Package: org.osgi.service.event; version="[1.4,2.0)"}
+ </p><p>
+ Example import for providers implementing the API in this package:
+ </p><p>
+ {@code  Import-Package: org.osgi.service.event; version="[1.4,1.5)"}</p>
+   </description>
+<author>@author $Id: 2322edbc01b9144062eec6ebb5c879cbab8f535c $</author>
+  <class name='Event' fqn='org.osgi.service.event.Event' qn='Event' package='org.osgi.service.event' typeParam='' modifiers='public class' kind='CLASS'>
+   <lead>
+An event.
+   </lead>
+   <description>
+An event.
+ 
+ {@code Event} objects are delivered to {@code EventHandler} services which
+ subscribe to the topic of the event.
+   </description>
+<Immutable></Immutable><author>@author $Id: 13cd9f2a04f5e69fbc2b736808495962a2d67f8a $</author>
+    <method name='Event' fqn='org.osgi.service.event.Event.Event' qn='Event.Event(String,Map)' package='org.osgi.service.event' typeArgs='' modifiers='public' signature='(java.lang.String,java.util.Map&lt;java.lang.String,?&gt;)' flatSignature='(String,Map)' isConstructor='true'>
+   <lead>
+Constructs an event.
+   </lead>
+   <description>
+Constructs an event.
+   </description>
+
+<param name='topic'>The topic of the event.</param>
+<param name='properties'>The event's properties (may be {@code null}). A
+        property whose key is not of type {@code String} will be ignored.
+        If the specified properties is an {@link EventProperties} object,
+        then it will be directly used. Otherwise, a copy of the specified
+        properties is made.</param>
+
+
+<throws name='IllegalArgumentException'>If topic is not a valid topic name.</throws>
+
+<since>@since 1.2</since>
+    <parameter name='topic' dimension='' typeName='String' fqn='java.lang.String' varargs='false'/>
+    <parameter name='properties' dimension='' typeName='Map&lt;String, ?&gt;' fqn='java.util.Map' varargs='false'/>
+     </method>
+    <method name='Event' fqn='org.osgi.service.event.Event.Event' qn='Event.Event(String,Dictionary)' package='org.osgi.service.event' typeArgs='' modifiers='public' signature='(java.lang.String,java.util.Dictionary&lt;java.lang.String,?&gt;)' flatSignature='(String,Dictionary)' isConstructor='true'>
+   <lead>
+Constructs an event.
+   </lead>
+   <description>
+Constructs an event.
+   </description>
+
+<param name='topic'>The topic of the event.</param>
+<param name='properties'>The event's properties (may be {@code null}). A
+        property whose key is not of type {@code String} will be ignored.
+        A copy of the specified properties is made.</param>
+
+
+<throws name='IllegalArgumentException'>If topic is not a valid topic name.</throws>
+
+
+    <parameter name='topic' dimension='' typeName='String' fqn='java.lang.String' varargs='false'/>
+    <parameter name='properties' dimension='' typeName='Dictionary&lt;String, ?&gt;' fqn='java.util.Dictionary' varargs='false'/>
+     </method>
+    <method name='getProperty' fqn='org.osgi.service.event.Event.getProperty' qn='Event.getProperty(String)' package='org.osgi.service.event' modifiers='public final' typeName='Object' qualifiedTypeName='java.lang.Object' typeArgs='' dimension='' signature='(java.lang.String)' flatSignature='(String)'>
+   <lead>
+Retrieve the value of an event property.
+   </lead>
+   <description>
+Retrieve the value of an event property. The event topic may be retrieved
+ with the property name &quot;event.topics&quot;.
+   </description>
+
+<param name='name'>The name of the property to retrieve.</param>
+
+<return>The value of the property, or {@code null} if not found.</return>
+
+
+
+    <parameter name='name' dimension='' typeName='String' fqn='java.lang.String' varargs='false'/>
+     </method>
+    <method name='containsProperty' fqn='org.osgi.service.event.Event.containsProperty' qn='Event.containsProperty(String)' package='org.osgi.service.event' modifiers='public final' typeName='boolean' qualifiedTypeName='boolean' typeArgs='' dimension='' signature='(java.lang.String)' flatSignature='(String)'>
+   <lead>
+Indicate the presence of an event property.
+   </lead>
+   <description>
+Indicate the presence of an event property. The event topic is present
+ using the property name &quot;event.topics&quot;.
+   </description>
+
+<param name='name'>The name of the property.</param>
+
+<return>{@code true} if a property with the specified name is in the
+         event. This property may have a {@code null} value. {@code false}
+         otherwise.</return>
+
+
+<since>@since 1.3</since>
+    <parameter name='name' dimension='' typeName='String' fqn='java.lang.String' varargs='false'/>
+     </method>
+    <method name='getPropertyNames' fqn='org.osgi.service.event.Event.getPropertyNames' qn='Event.getPropertyNames()' package='org.osgi.service.event' modifiers='public final' typeName='String[]' qualifiedTypeName='java.lang.String[]' typeArgs='' dimension='[]' signature='()' flatSignature='()'>
+   <lead>
+Returns a list of this event's property names.
+   </lead>
+   <description>
+Returns a list of this event's property names. The list will include the
+ event topic property name &quot;event.topics&quot;.
+   </description>
+
+
+<return>A non-empty array with one element per property.</return>
+
+
+
+     </method>
+    <method name='getTopic' fqn='org.osgi.service.event.Event.getTopic' qn='Event.getTopic()' package='org.osgi.service.event' modifiers='public final' typeName='String' qualifiedTypeName='java.lang.String' typeArgs='' dimension='' signature='()' flatSignature='()'>
+   <lead>
+Returns the topic of this event.
+   </lead>
+   <description>
+Returns the topic of this event.
+   </description>
+
+
+<return>The topic of this event.</return>
+
+
+
+     </method>
+    <method name='matches' fqn='org.osgi.service.event.Event.matches' qn='Event.matches(Filter)' package='org.osgi.service.event' modifiers='public final' typeName='boolean' qualifiedTypeName='boolean' typeArgs='' dimension='' signature='(org.osgi.framework.Filter)' flatSignature='(Filter)'>
+   <lead>
+Tests this event's properties against the given filter using a case
+ sensitive match.
+   </lead>
+   <description>
+Tests this event's properties against the given filter using a case
+ sensitive match.
+   </description>
+
+<param name='filter'>The filter to test.</param>
+
+<return>true If this event's properties match the filter, false
+         otherwise.</return>
+
+
+
+    <parameter name='filter' dimension='' typeName='Filter' fqn='org.osgi.framework.Filter' varargs='false'/>
+     </method>
+    <method name='equals' fqn='org.osgi.service.event.Event.equals' qn='Event.equals(Object)' package='org.osgi.service.event' modifiers='public' typeName='boolean' qualifiedTypeName='boolean' typeArgs='' dimension='' signature='(java.lang.Object)' flatSignature='(Object)'>
+<java.lang.Override></java.lang.Override>
+   <lead>
+Compares this {@code Event} object to another object.
+   </lead>
+   <description>
+Compares this {@code Event} object to another object.
+ 
+ <p>
+ An event is considered to be <b>equal to</b> another event if the topic
+ is equal and the properties are equal. The properties are compared using
+ the {@code java.util.Map.equals()} rules which includes identity
+ comparison for array values.</p>
+   </description>
+
+<param name='object'>The {@code Event} object to be compared.</param>
+
+<return>{@code true} if {@code object} is a {@code Event} and is equal to
+         this object; {@code false} otherwise.</return>
+
+
+
+    <parameter name='object' dimension='' typeName='Object' fqn='java.lang.Object' varargs='false'/>
+     </method>
+    <method name='hashCode' fqn='org.osgi.service.event.Event.hashCode' qn='Event.hashCode()' package='org.osgi.service.event' modifiers='public' typeName='int' qualifiedTypeName='int' typeArgs='' dimension='' signature='()' flatSignature='()'>
+<java.lang.Override></java.lang.Override>
+   <lead>
+Returns a hash code value for this object.
+   </lead>
+   <description>
+Returns a hash code value for this object.
+   </description>
+
+
+<return>An integer which is a hash code value for this object.</return>
+
+
+
+     </method>
+    <method name='toString' fqn='org.osgi.service.event.Event.toString' qn='Event.toString()' package='org.osgi.service.event' modifiers='public' typeName='String' qualifiedTypeName='java.lang.String' typeArgs='' dimension='' signature='()' flatSignature='()'>
+<java.lang.Override></java.lang.Override>
+   <lead>
+Returns the string representation of this event.
+   </lead>
+   <description>
+Returns the string representation of this event.
+   </description>
+
+
+<return>The string representation of this event.</return>
+
+
+
+     </method>
+  </class>
+  <class name='EventAdmin' fqn='org.osgi.service.event.EventAdmin' qn='EventAdmin' package='org.osgi.service.event' typeParam='' modifiers='public abstract' interface='yes' kind='INTERFACE'>
+<org.osgi.annotation.versioning.ProviderType></org.osgi.annotation.versioning.ProviderType>
+   <lead>
+The Event Admin service.
+   </lead>
+   <description>
+The Event Admin service. Bundles wishing to publish events must obtain the
+ Event Admin service and call one of the event delivery methods.
+   </description>
+<ThreadSafe></ThreadSafe><author>@author $Id: 2ec34712c5331202a047b91303bf27ca0640338a $</author>
+    <method name='postEvent' fqn='org.osgi.service.event.EventAdmin.postEvent' qn='EventAdmin.postEvent(Event)' package='org.osgi.service.event' modifiers='public abstract' typeName='void' qualifiedTypeName='void' typeArgs='' dimension='' signature='(org.osgi.service.event.Event)' flatSignature='(Event)'>
+   <lead>
+Initiate asynchronous, ordered delivery of an event.
+   </lead>
+   <description>
+Initiate asynchronous, ordered delivery of an event. This method returns
+ to the caller before delivery of the event is completed. Events are
+ delivered in the order that they are received by this method.
+   </description>
+
+<param name='event'>The event to send to all listeners which subscribe to the
+        topic of the event.</param>
+
+
+<throws name='SecurityException'>If the caller does not have
+         {@code TopicPermission[topic,PUBLISH]} for the topic specified in
+         the event.</throws>
+
+
+    <parameter name='event' dimension='' typeName='Event' fqn='org.osgi.service.event.Event' varargs='false'/>
+     </method>
+    <method name='sendEvent' fqn='org.osgi.service.event.EventAdmin.sendEvent' qn='EventAdmin.sendEvent(Event)' package='org.osgi.service.event' modifiers='public abstract' typeName='void' qualifiedTypeName='void' typeArgs='' dimension='' signature='(org.osgi.service.event.Event)' flatSignature='(Event)'>
+   <lead>
+Initiate synchronous delivery of an event.
+   </lead>
+   <description>
+Initiate synchronous delivery of an event. This method does not return to
+ the caller until delivery of the event is completed.
+   </description>
+
+<param name='event'>The event to send to all listeners which subscribe to the
+        topic of the event.</param>
+
+
+<throws name='SecurityException'>If the caller does not have
+         {@code TopicPermission[topic,PUBLISH]} for the topic specified in
+         the event.</throws>
+
+
+    <parameter name='event' dimension='' typeName='Event' fqn='org.osgi.service.event.Event' varargs='false'/>
+     </method>
+  </class>
+  <class name='EventConstants' fqn='org.osgi.service.event.EventConstants' qn='EventConstants' package='org.osgi.service.event' typeParam='' modifiers='public abstract' interface='yes' kind='INTERFACE'>
+<org.osgi.annotation.versioning.ProviderType></org.osgi.annotation.versioning.ProviderType>
+   <lead>
+Defines standard names for {@code EventHandler} properties.
+   </lead>
+   <description>
+Defines standard names for {@code EventHandler} properties.
+   </description>
+<author>@author $Id: 37a3a2f82d11ec1768a045fce4be4ace038f1edc $</author>
+    <field name='EVENT_TOPIC' fqn='org.osgi.service.event.EventConstants.EVENT_TOPIC' qn='EventConstants.EVENT_TOPIC' package='org.osgi.service.event' modifiers='public static final' typeName='String' qualifiedTypeName='java.lang.String' dimension='' constantValue='"event.topics"'>
+   <lead>
+Service registration property specifying the {@code Event} topics of
+ interest to an Event Handler service.
+   </lead>
+   <description>
+Service registration property specifying the {@code Event} topics of
+ interest to an Event Handler service.
+ <p>
+ Event handlers SHOULD be registered with this property. Each value of
+ this property is a string that describe the topics in which the handler
+ is interested. An asterisk ('*') may be used as a trailing wildcard.
+ Event Handlers which do not have a value for this property must not
+ receive events. More precisely, the value of each string must conform to
+ the following grammar:
+ 
+ </p><pre>&#8194;&#8194;topic-description&#8194;:=&#8194;'*'&#8194;|&#8194;topic&#8194;(&#8194;'/*'&#8194;)?<br/>&#8194;&#8194;topic&#8194;:=&#8194;token&#8194;(&#8194;'/'&#8194;token&#8194;)*</pre>
+ 
+ <p>
+ The value of this property must be of type {@code String},
+ {@code String[]}, or {@code Collection&lt;String&gt;}.</p>
+   </description>
+<a href='#Event'>Event</a>
+     </field>
+    <field name='EVENT_FILTER' fqn='org.osgi.service.event.EventConstants.EVENT_FILTER' qn='EventConstants.EVENT_FILTER' package='org.osgi.service.event' modifiers='public static final' typeName='String' qualifiedTypeName='java.lang.String' dimension='' constantValue='"event.filter"'>
+   <lead>
+Service Registration property specifying a filter to further select
+ {@code Event} s of interest to an Event Handler service.
+   </lead>
+   <description>
+Service Registration property specifying a filter to further select
+ {@code Event} s of interest to an Event Handler service.
+ <p>
+ Event handlers MAY be registered with this property. The value of this
+ property is a string containing an LDAP-style filter specification. Any
+ of the event's properties may be used in the filter expression. Each
+ event handler is notified for any event which belongs to the topics in
+ which the handler has expressed an interest. If the event handler is also
+ registered with this service property, then the properties of the event
+ must also match the filter for the event to be delivered to the event
+ handler.
+ </p><p>
+ If the filter syntax is invalid, then the Event Handler must be ignored
+ and a warning should be logged.
+ 
+ </p><p>
+ The value of this property must be of type {@code String}.</p>
+   </description>
+<a href='#Event'>Event</a><a href='#Filter'>Filter</a>
+     </field>
+    <field name='EVENT_DELIVERY' fqn='org.osgi.service.event.EventConstants.EVENT_DELIVERY' qn='EventConstants.EVENT_DELIVERY' package='org.osgi.service.event' modifiers='public static final' typeName='String' qualifiedTypeName='java.lang.String' dimension='' constantValue='"event.delivery"'>
+   <lead>
+Service Registration property specifying the delivery qualities requested
+ by an Event Handler service.
+   </lead>
+   <description>
+Service Registration property specifying the delivery qualities requested
+ by an Event Handler service.
+ <p>
+ Event handlers MAY be registered with this property. Each value of this
+ property is a string specifying a delivery quality for the Event handler.
+ 
+ </p><p>
+ The value of this property must be of type {@code String},
+ {@code String[]}, or {@code Collection&lt;String&gt;}.</p>
+   </description>
+<a href='#DELIVERY_ASYNC_ORDERED'>DELIVERY_ASYNC_ORDERED</a><a href='#DELIVERY_ASYNC_UNORDERED'>DELIVERY_ASYNC_UNORDERED</a><since>@since 1.3</since>
+     </field>
+    <field name='DELIVERY_ASYNC_ORDERED' fqn='org.osgi.service.event.EventConstants.DELIVERY_ASYNC_ORDERED' qn='EventConstants.DELIVERY_ASYNC_ORDERED' package='org.osgi.service.event' modifiers='public static final' typeName='String' qualifiedTypeName='java.lang.String' dimension='' constantValue='"async.ordered"'>
+   <lead>
+Event Handler delivery quality value specifying the Event Handler
+ requires asynchronously delivered events be delivered in order.
+   </lead>
+   <description>
+Event Handler delivery quality value specifying the Event Handler
+ requires asynchronously delivered events be delivered in order. Ordered
+ delivery is the default for asynchronously delivered events.
+ 
+ <p>
+ This delivery quality value is mutually exclusive with
+ {@link #DELIVERY_ASYNC_UNORDERED}. However, if both this value and
+ {@link #DELIVERY_ASYNC_UNORDERED} are specified for an event handler,
+ this value takes precedence.</p>
+   </description>
+<a href='#EVENT_DELIVERY'>EVENT_DELIVERY</a><since>@since 1.3</since>
+     </field>
+    <field name='DELIVERY_ASYNC_UNORDERED' fqn='org.osgi.service.event.EventConstants.DELIVERY_ASYNC_UNORDERED' qn='EventConstants.DELIVERY_ASYNC_UNORDERED' package='org.osgi.service.event' modifiers='public static final' typeName='String' qualifiedTypeName='java.lang.String' dimension='' constantValue='"async.unordered"'>
+   <lead>
+Event Handler delivery quality value specifying the Event Handler does
+ not require asynchronously delivered events be delivered in order.
+   </lead>
+   <description>
+Event Handler delivery quality value specifying the Event Handler does
+ not require asynchronously delivered events be delivered in order. This
+ may allow an Event Admin implementation to optimize asynchronous event
+ delivery by relaxing ordering requirements.
+ 
+ <p>
+ This delivery quality value is mutually exclusive with
+ {@link #DELIVERY_ASYNC_ORDERED}. However, if both this value and
+ {@link #DELIVERY_ASYNC_ORDERED} are specified for an event handler,
+ {@link #DELIVERY_ASYNC_ORDERED} takes precedence.</p>
+   </description>
+<a href='#EVENT_DELIVERY'>EVENT_DELIVERY</a><since>@since 1.3</since>
+     </field>
+    <field name='BUNDLE_SIGNER' fqn='org.osgi.service.event.EventConstants.BUNDLE_SIGNER' qn='EventConstants.BUNDLE_SIGNER' package='org.osgi.service.event' modifiers='public static final' typeName='String' qualifiedTypeName='java.lang.String' dimension='' constantValue='"bundle.signer"'>
+   <lead>
+The Distinguished Names of the signers of the bundle relevant to the
+ event.
+   </lead>
+   <description>
+The Distinguished Names of the signers of the bundle relevant to the
+ event. The type of the value for this event property is {@code String} or
+ {@code Collection} of {@code String}.
+   </description>
+
+     </field>
+    <field name='BUNDLE_SYMBOLICNAME' fqn='org.osgi.service.event.EventConstants.BUNDLE_SYMBOLICNAME' qn='EventConstants.BUNDLE_SYMBOLICNAME' package='org.osgi.service.event' modifiers='public static final' typeName='String' qualifiedTypeName='java.lang.String' dimension='' constantValue='"bundle.symbolicName"'>
+   <lead>
+The Bundle Symbolic Name of the bundle relevant to the event.
+   </lead>
+   <description>
+The Bundle Symbolic Name of the bundle relevant to the event. The type of
+ the value for this event property is {@code String}.
+   </description>
+
+     </field>
+    <field name='BUNDLE_ID' fqn='org.osgi.service.event.EventConstants.BUNDLE_ID' qn='EventConstants.BUNDLE_ID' package='org.osgi.service.event' modifiers='public static final' typeName='String' qualifiedTypeName='java.lang.String' dimension='' constantValue='"bundle.id"'>
+   <lead>
+The Bundle id of the bundle relevant to the event.
+   </lead>
+   <description>
+The Bundle id of the bundle relevant to the event. The type of the value
+ for this event property is {@code Long}.
+   </description>
+<since>@since 1.1</since>
+     </field>
+    <field name='BUNDLE' fqn='org.osgi.service.event.EventConstants.BUNDLE' qn='EventConstants.BUNDLE' package='org.osgi.service.event' modifiers='public static final' typeName='String' qualifiedTypeName='java.lang.String' dimension='' constantValue='"bundle"'>
+   <lead>
+The Bundle object of the bundle relevant to the event.
+   </lead>
+   <description>
+The Bundle object of the bundle relevant to the event. The type of the
+ value for this event property is {@link Bundle}.
+   </description>
+<since>@since 1.1</since>
+     </field>
+    <field name='BUNDLE_VERSION' fqn='org.osgi.service.event.EventConstants.BUNDLE_VERSION' qn='EventConstants.BUNDLE_VERSION' package='org.osgi.service.event' modifiers='public static final' typeName='String' qualifiedTypeName='java.lang.String' dimension='' constantValue='"bundle.version"'>
+   <lead>
+The version of the bundle relevant to the event.
+   </lead>
+   <description>
+The version of the bundle relevant to the event. The type of the value
+ for this event property is {@link Version}.
+   </description>
+<since>@since 1.2</since>
+     </field>
+    <field name='EVENT' fqn='org.osgi.service.event.EventConstants.EVENT' qn='EventConstants.EVENT' package='org.osgi.service.event' modifiers='public static final' typeName='String' qualifiedTypeName='java.lang.String' dimension='' constantValue='"event"'>
+   <lead>
+The forwarded event object.
+   </lead>
+   <description>
+The forwarded event object. Used when rebroadcasting an event that was
+ sent via some other event mechanism. The type of the value for this event
+ property is {@code Object}.
+   </description>
+
+     </field>
+    <field name='EXCEPTION' fqn='org.osgi.service.event.EventConstants.EXCEPTION' qn='EventConstants.EXCEPTION' package='org.osgi.service.event' modifiers='public static final' typeName='String' qualifiedTypeName='java.lang.String' dimension='' constantValue='"exception"'>
+   <lead>
+An exception or error.
+   </lead>
+   <description>
+An exception or error. The type of the value for this event property is
+ {@code Throwable}.
+   </description>
+
+     </field>
+    <field name='EXCEPTION_CLASS' fqn='org.osgi.service.event.EventConstants.EXCEPTION_CLASS' qn='EventConstants.EXCEPTION_CLASS' package='org.osgi.service.event' modifiers='public static final' typeName='String' qualifiedTypeName='java.lang.String' dimension='' constantValue='"exception.class"'>
+   <lead>
+The name of the exception type.
+   </lead>
+   <description>
+The name of the exception type. Must be equal to the name of the class of
+ the exception in the event property {@link #EXCEPTION}. The type of the
+ value for this event property is {@code String}.
+   </description>
+<since>@since 1.1</since>
+     </field>
+    <field name='EXCEPTION_MESSAGE' fqn='org.osgi.service.event.EventConstants.EXCEPTION_MESSAGE' qn='EventConstants.EXCEPTION_MESSAGE' package='org.osgi.service.event' modifiers='public static final' typeName='String' qualifiedTypeName='java.lang.String' dimension='' constantValue='"exception.message"'>
+   <lead>
+The exception message.
+   </lead>
+   <description>
+The exception message. Must be equal to the result of calling
+ {@code getMessage()} on the exception in the event property
+ {@link #EXCEPTION}. The type of the value for this event property is
+ {@code String}.
+   </description>
+
+     </field>
+    <field name='MESSAGE' fqn='org.osgi.service.event.EventConstants.MESSAGE' qn='EventConstants.MESSAGE' package='org.osgi.service.event' modifiers='public static final' typeName='String' qualifiedTypeName='java.lang.String' dimension='' constantValue='"message"'>
+   <lead>
+A human-readable message that is usually not localized.
+   </lead>
+   <description>
+A human-readable message that is usually not localized. The type of the
+ value for this event property is {@code String}.
+   </description>
+
+     </field>
+    <field name='SERVICE' fqn='org.osgi.service.event.EventConstants.SERVICE' qn='EventConstants.SERVICE' package='org.osgi.service.event' modifiers='public static final' typeName='String' qualifiedTypeName='java.lang.String' dimension='' constantValue='"service"'>
+   <lead>
+A service reference.
+   </lead>
+   <description>
+A service reference. The type of the value for this event property is
+ {@link ServiceReference}.
+   </description>
+
+     </field>
+    <field name='SERVICE_ID' fqn='org.osgi.service.event.EventConstants.SERVICE_ID' qn='EventConstants.SERVICE_ID' package='org.osgi.service.event' modifiers='public static final' typeName='String' qualifiedTypeName='java.lang.String' dimension='' constantValue='"service.id"'>
+   <lead>
+A service's id.
+   </lead>
+   <description>
+A service's id. The type of the value for this event property is
+ {@code Long}.
+   </description>
+
+     </field>
+    <field name='SERVICE_OBJECTCLASS' fqn='org.osgi.service.event.EventConstants.SERVICE_OBJECTCLASS' qn='EventConstants.SERVICE_OBJECTCLASS' package='org.osgi.service.event' modifiers='public static final' typeName='String' qualifiedTypeName='java.lang.String' dimension='' constantValue='"service.objectClass"'>
+   <lead>
+A service's objectClass.
+   </lead>
+   <description>
+A service's objectClass. The type of the value for this event property is
+ {@code String[]}.
+   </description>
+
+     </field>
+    <field name='SERVICE_PID' fqn='org.osgi.service.event.EventConstants.SERVICE_PID' qn='EventConstants.SERVICE_PID' package='org.osgi.service.event' modifiers='public static final' typeName='String' qualifiedTypeName='java.lang.String' dimension='' constantValue='"service.pid"'>
+   <lead>
+A service's persistent identity.
+   </lead>
+   <description>
+A service's persistent identity. The type of the value for this event
+ property is {@code String} or {@code Collection} of {@code String}.
+   </description>
+
+     </field>
+    <field name='TIMESTAMP' fqn='org.osgi.service.event.EventConstants.TIMESTAMP' qn='EventConstants.TIMESTAMP' package='org.osgi.service.event' modifiers='public static final' typeName='String' qualifiedTypeName='java.lang.String' dimension='' constantValue='"timestamp"'>
+   <lead>
+The time when the event occurred, as reported by
+ {@code System.currentTimeMillis()}.
+   </lead>
+   <description>
+The time when the event occurred, as reported by
+ {@code System.currentTimeMillis()}. The type of the value for this event
+ property is {@code Long}.
+   </description>
+
+     </field>
+    <field name='EVENT_ADMIN_IMPLEMENTATION' fqn='org.osgi.service.event.EventConstants.EVENT_ADMIN_IMPLEMENTATION' qn='EventConstants.EVENT_ADMIN_IMPLEMENTATION' package='org.osgi.service.event' modifiers='public static final' typeName='String' qualifiedTypeName='java.lang.String' dimension='' constantValue='"osgi.event"'>
+   <lead>
+The name of the implementation capability for the Event Admin
+ specification
+   </lead>
+   <description>
+The name of the implementation capability for the Event Admin
+ specification
+   </description>
+<since>@since 1.4</since>
+     </field>
+    <field name='EVENT_ADMIN_SPECIFICATION_VERSION' fqn='org.osgi.service.event.EventConstants.EVENT_ADMIN_SPECIFICATION_VERSION' qn='EventConstants.EVENT_ADMIN_SPECIFICATION_VERSION' package='org.osgi.service.event' modifiers='public static final' typeName='String' qualifiedTypeName='java.lang.String' dimension='' constantValue='"1.4"'>
+   <lead>
+The version of the implementation capability for the Event Admin
+ specification
+   </lead>
+   <description>
+The version of the implementation capability for the Event Admin
+ specification
+   </description>
+<since>@since 1.4</since>
+     </field>
+    <field name='EXECPTION_CLASS' fqn='org.osgi.service.event.EventConstants.EXECPTION_CLASS' qn='EventConstants.EXECPTION_CLASS' package='org.osgi.service.event' modifiers='public static final' typeName='String' qualifiedTypeName='java.lang.String' dimension='' constantValue='"exception.class"'>
+   <lead>
+This constant was released with an incorrectly spelled name.
+   </lead>
+   <description>
+This constant was released with an incorrectly spelled name. It has been
+ replaced by {@link #EXCEPTION_CLASS}
+   </description>
+<deprecated>@deprecated As of 1.1. Replaced by {@link #EXCEPTION_CLASS}.</deprecated>
+     </field>
+  </class>
+  <class name='EventHandler' fqn='org.osgi.service.event.EventHandler' qn='EventHandler' package='org.osgi.service.event' typeParam='' modifiers='public abstract' interface='yes' kind='INTERFACE'>
+<org.osgi.annotation.versioning.ConsumerType></org.osgi.annotation.versioning.ConsumerType>
+   <lead>
+Listener for Events.
+   </lead>
+   <description>
+Listener for Events.
+ 
+ <p>
+ {@code EventHandler} objects are registered with the Framework service
+ registry and are notified with an {@code Event} object when an event is sent
+ or posted.
+ </p><p>
+ {@code EventHandler} objects can inspect the received {@code Event} object to
+ determine its topic and properties.
+ 
+ </p><p>
+ {@code EventHandler} objects must be registered with a service property
+ {@link EventConstants#EVENT_TOPIC} whose value is the list of topics in which
+ the event handler is interested.
+ </p><p>
+ For example:
+ 
+ </p><pre>&#8194;String[]&#8194;topics&#8194;=&#8194;new&#8194;String[]&#8194;{&quot;com/isv/*&quot;};<br/>&#8194;Hashtable&#8194;ht&#8194;=&#8194;new&#8194;Hashtable();<br/>&#8194;ht.put(EventConstants.EVENT_TOPIC,&#8194;topics);<br/>&#8194;context.registerService(EventHandler.class.getName(),&#8194;this,&#8194;ht);</pre>
+ 
+ Event Handler services can also be registered with an
+ {@link EventConstants#EVENT_FILTER} service property to further filter the
+ events. If the syntax of this filter is invalid, then the Event Handler must
+ be ignored by the Event Admin service. The Event Admin service should log a
+ warning.
+ <p>
+ Security Considerations. Bundles wishing to monitor {@code Event} objects
+ will require {@code ServicePermission[EventHandler,REGISTER]} to register an
+ {@code EventHandler} service. The bundle must also have
+ {@code TopicPermission[topic,SUBSCRIBE]} for the topic specified in the event
+ in order to receive the event.</p>
+   </description>
+<a href='#Event'>Event</a><ThreadSafe></ThreadSafe><author>@author $Id: 3c3c847b7d108d08c6f36ca5d863aa297d80eed3 $</author>
+    <method name='handleEvent' fqn='org.osgi.service.event.EventHandler.handleEvent' qn='EventHandler.handleEvent(Event)' package='org.osgi.service.event' modifiers='public abstract' typeName='void' qualifiedTypeName='void' typeArgs='' dimension='' signature='(org.osgi.service.event.Event)' flatSignature='(Event)'>
+   <lead>
+Called by the {@link EventAdmin} service to notify the listener of an
+ event.
+   </lead>
+   <description>
+Called by the {@link EventAdmin} service to notify the listener of an
+ event.
+   </description>
+
+<param name='event'>The event that occurred.</param>
+
+
+
+
+    <parameter name='event' dimension='' typeName='Event' fqn='org.osgi.service.event.Event' varargs='false'/>
+     </method>
+  </class>
+  <class name='EventProperties' fqn='org.osgi.service.event.EventProperties' qn='EventProperties' package='org.osgi.service.event' typeParam='' modifiers='public class' kind='CLASS'>
+   <lead>
+The properties for an {@link Event}.
+   </lead>
+   <description>
+The properties for an {@link Event}. An event source can create an
+ EventProperties object if it needs to reuse the same event properties for
+ multiple events.
+ 
+ <p>
+ The keys are all of type {@code String}. The values are of type
+ {@code Object}. The key &quot;event.topics&quot; is ignored as event topics
+ can only be set when an {@link Event} is constructed.
+ 
+ </p><p>
+ Once constructed, an EventProperties object is unmodifiable. However, the
+ values of the map used to construct an EventProperties object are still
+ subject to modification as they are not deeply copied.</p>
+   </description>
+<Immutable></Immutable><since>@since 1.3</since><author>@author $Id: ebaab39758f3665df6cdd8bee80face91ed61ade $</author>
+<implements name='Map&lt;String, Object&gt;' fqn='java.util.Map' qn='Map&lt;String, Object&gt;' package='java.util' local='org.osgi.service.event.EventProperties'/>
+    <method name='EventProperties' fqn='org.osgi.service.event.EventProperties.EventProperties' qn='EventProperties.EventProperties(Map)' package='org.osgi.service.event' typeArgs='' modifiers='public' signature='(java.util.Map&lt;java.lang.String,?&gt;)' flatSignature='(Map)' isConstructor='true'>
+   <lead>
+Create an EventProperties from the specified properties.
+   </lead>
+   <description>
+Create an EventProperties from the specified properties.
+ 
+ <p>
+ The specified properties will be copied into this EventProperties.
+ Properties whose key is not of type {@code String} will be ignored. A
+ property with the key &quot;event.topics&quot; will be ignored.</p>
+   </description>
+
+<param name='properties'>The properties to use for this EventProperties object
+        (may be {@code null}).</param>
+
+
+
+
+    <parameter name='properties' dimension='' typeName='Map&lt;String, ?&gt;' fqn='java.util.Map' varargs='false'/>
+     </method>
+    <method name='clear' fqn='org.osgi.service.event.EventProperties.clear' qn='EventProperties.clear()' package='org.osgi.service.event' modifiers='public' typeName='void' qualifiedTypeName='void' typeArgs='' dimension='' signature='()' flatSignature='()'>
+<java.lang.Override></java.lang.Override>
+   <lead>
+This method throws {@link UnsupportedOperationException}.
+   </lead>
+   <description>
+This method throws {@link UnsupportedOperationException}.
+   </description>
+
+
+
+<throws name='UnsupportedOperationException'>if called.</throws>
+
+
+     </method>
+    <method name='containsKey' fqn='org.osgi.service.event.EventProperties.containsKey' qn='EventProperties.containsKey(Object)' package='org.osgi.service.event' modifiers='public' typeName='boolean' qualifiedTypeName='boolean' typeArgs='' dimension='' signature='(java.lang.Object)' flatSignature='(Object)'>
+<java.lang.Override></java.lang.Override>
+   <lead>
+Indicates if the specified property is present.
+   </lead>
+   <description>
+Indicates if the specified property is present.
+   </description>
+
+<param name='name'>The property name.</param>
+
+<return>{@code true} If the property is present, {@code false} otherwise.</return>
+
+
+
+    <parameter name='name' dimension='' typeName='Object' fqn='java.lang.Object' varargs='false'/>
+     </method>
+    <method name='containsValue' fqn='org.osgi.service.event.EventProperties.containsValue' qn='EventProperties.containsValue(Object)' package='org.osgi.service.event' modifiers='public' typeName='boolean' qualifiedTypeName='boolean' typeArgs='' dimension='' signature='(java.lang.Object)' flatSignature='(Object)'>
+<java.lang.Override></java.lang.Override>
+   <lead>
+Indicates if the specified value is present.
+   </lead>
+   <description>
+Indicates if the specified value is present.
+   </description>
+
+<param name='value'>The property value.</param>
+
+<return>{@code true} If the value is present, {@code false} otherwise.</return>
+
+
+
+    <parameter name='value' dimension='' typeName='Object' fqn='java.lang.Object' varargs='false'/>
+     </method>
+    <method name='entrySet' fqn='org.osgi.service.event.EventProperties.entrySet' qn='EventProperties.entrySet()' package='org.osgi.service.event' modifiers='public' typeName='Set&lt;Entry&lt;String, Object&gt;&gt;' qualifiedTypeName='java.util.Set' typeArgs='' dimension='' signature='()' flatSignature='()'>
+<java.lang.Override></java.lang.Override>
+   <lead>
+Return the property entries.
+   </lead>
+   <description>
+Return the property entries.
+   </description>
+
+
+<return>A set containing the property name/value pairs.</return>
+
+
+
+     </method>
+    <method name='get' fqn='org.osgi.service.event.EventProperties.get' qn='EventProperties.get(Object)' package='org.osgi.service.event' modifiers='public' typeName='Object' qualifiedTypeName='java.lang.Object' typeArgs='' dimension='' signature='(java.lang.Object)' flatSignature='(Object)'>
+<java.lang.Override></java.lang.Override>
+   <lead>
+Return the value of the specified property.
+   </lead>
+   <description>
+Return the value of the specified property.
+   </description>
+
+<param name='name'>The name of the specified property.</param>
+
+<return>The value of the specified property.</return>
+
+
+
+    <parameter name='name' dimension='' typeName='Object' fqn='java.lang.Object' varargs='false'/>
+     </method>
+    <method name='isEmpty' fqn='org.osgi.service.event.EventProperties.isEmpty' qn='EventProperties.isEmpty()' package='org.osgi.service.event' modifiers='public' typeName='boolean' qualifiedTypeName='boolean' typeArgs='' dimension='' signature='()' flatSignature='()'>
+<java.lang.Override></java.lang.Override>
+   <lead>
+Indicate if this properties is empty.
+   </lead>
+   <description>
+Indicate if this properties is empty.
+   </description>
+
+
+<return>{@code true} If this properties is empty, {@code false}
+         otherwise.</return>
+
+
+
+     </method>
+    <method name='keySet' fqn='org.osgi.service.event.EventProperties.keySet' qn='EventProperties.keySet()' package='org.osgi.service.event' modifiers='public' typeName='Set&lt;String&gt;' qualifiedTypeName='java.util.Set' typeArgs='' dimension='' signature='()' flatSignature='()'>
+<java.lang.Override></java.lang.Override>
+   <lead>
+Return the names of the properties.
+   </lead>
+   <description>
+Return the names of the properties.
+   </description>
+
+
+<return>The names of the properties.</return>
+
+
+
+     </method>
+    <method name='put' fqn='org.osgi.service.event.EventProperties.put' qn='EventProperties.put(String,Object)' package='org.osgi.service.event' modifiers='public' typeName='Object' qualifiedTypeName='java.lang.Object' typeArgs='' dimension='' signature='(java.lang.String,java.lang.Object)' flatSignature='(String,Object)'>
+<java.lang.Override></java.lang.Override>
+   <lead>
+This method throws {@link UnsupportedOperationException}.
+   </lead>
+   <description>
+This method throws {@link UnsupportedOperationException}.
+   </description>
+
+
+
+<throws name='UnsupportedOperationException'>if called.</throws>
+
+
+    <parameter name='key' dimension='' typeName='String' fqn='java.lang.String' varargs='false'/>
+    <parameter name='value' dimension='' typeName='Object' fqn='java.lang.Object' varargs='false'/>
+     </method>
+    <method name='putAll' fqn='org.osgi.service.event.EventProperties.putAll' qn='EventProperties.putAll(Map)' package='org.osgi.service.event' modifiers='public' typeName='void' qualifiedTypeName='void' typeArgs='' dimension='' signature='(java.util.Map&lt;? extends java.lang.String,? extends java.lang.Object&gt;)' flatSignature='(Map)'>
+<java.lang.Override></java.lang.Override>
+   <lead>
+This method throws {@link UnsupportedOperationException}.
+   </lead>
+   <description>
+This method throws {@link UnsupportedOperationException}.
+   </description>
+
+
+
+<throws name='UnsupportedOperationException'>if called.</throws>
+
+
+    <parameter name='map' dimension='' typeName='Map&lt;? extends String, ? extends Object&gt;' fqn='java.util.Map' varargs='false'/>
+     </method>
+    <method name='remove' fqn='org.osgi.service.event.EventProperties.remove' qn='EventProperties.remove(Object)' package='org.osgi.service.event' modifiers='public' typeName='Object' qualifiedTypeName='java.lang.Object' typeArgs='' dimension='' signature='(java.lang.Object)' flatSignature='(Object)'>
+<java.lang.Override></java.lang.Override>
+   <lead>
+This method throws {@link UnsupportedOperationException}.
+   </lead>
+   <description>
+This method throws {@link UnsupportedOperationException}.
+   </description>
+
+
+
+<throws name='UnsupportedOperationException'>if called.</throws>
+
+
+    <parameter name='key' dimension='' typeName='Object' fqn='java.lang.Object' varargs='false'/>
+     </method>
+    <method name='size' fqn='org.osgi.service.event.EventProperties.size' qn='EventProperties.size()' package='org.osgi.service.event' modifiers='public' typeName='int' qualifiedTypeName='int' typeArgs='' dimension='' signature='()' flatSignature='()'>
+<java.lang.Override></java.lang.Override>
+   <lead>
+Return the number of properties.
+   </lead>
+   <description>
+Return the number of properties.
+   </description>
+
+
+<return>The number of properties.</return>
+
+
+
+     </method>
+    <method name='values' fqn='org.osgi.service.event.EventProperties.values' qn='EventProperties.values()' package='org.osgi.service.event' modifiers='public' typeName='Collection&lt;Object&gt;' qualifiedTypeName='java.util.Collection' typeArgs='' dimension='' signature='()' flatSignature='()'>
+<java.lang.Override></java.lang.Override>
+   <lead>
+Return the properties values.
+   </lead>
+   <description>
+Return the properties values.
+   </description>
+
+
+<return>The values of the properties.</return>
+
+
+
+     </method>
+    <method name='equals' fqn='org.osgi.service.event.EventProperties.equals' qn='EventProperties.equals(Object)' package='org.osgi.service.event' modifiers='public' typeName='boolean' qualifiedTypeName='boolean' typeArgs='' dimension='' signature='(java.lang.Object)' flatSignature='(Object)'>
+<java.lang.Override></java.lang.Override>
+   <lead>
+Compares this {@code EventProperties} object to another object.
+   </lead>
+   <description>
+Compares this {@code EventProperties} object to another object.
+ 
+ <p>
+ The properties are compared using the {@code java.util.Map.equals()}
+ rules which includes identity comparison for array values.</p>
+   </description>
+
+<param name='object'>The {@code EventProperties} object to be compared.</param>
+
+<return>{@code true} if {@code object} is a {@code EventProperties} and
+         is equal to this object; {@code false} otherwise.</return>
+
+
+
+    <parameter name='object' dimension='' typeName='Object' fqn='java.lang.Object' varargs='false'/>
+     </method>
+    <method name='hashCode' fqn='org.osgi.service.event.EventProperties.hashCode' qn='EventProperties.hashCode()' package='org.osgi.service.event' modifiers='public' typeName='int' qualifiedTypeName='int' typeArgs='' dimension='' signature='()' flatSignature='()'>
+<java.lang.Override></java.lang.Override>
+   <lead>
+Returns a hash code value for this object.
+   </lead>
+   <description>
+Returns a hash code value for this object.
+   </description>
+
+
+<return>An integer which is a hash code value for this object.</return>
+
+
+
+     </method>
+    <method name='toString' fqn='org.osgi.service.event.EventProperties.toString' qn='EventProperties.toString()' package='org.osgi.service.event' modifiers='public' typeName='String' qualifiedTypeName='java.lang.String' typeArgs='' dimension='' signature='()' flatSignature='()'>
+<java.lang.Override></java.lang.Override>
+   <lead>
+Returns the string representation of this object.
+   </lead>
+   <description>
+Returns the string representation of this object.
+   </description>
+
+
+<return>The string representation of this object.</return>
+
+
+
+     </method>
+  </class>
+  <class name='TopicPermission' fqn='org.osgi.service.event.TopicPermission' qn='TopicPermission' package='org.osgi.service.event' typeParam='' modifiers='public final class' superclass='Permission' kind='CLASS'>
+   <lead>
+A bundle's authority to publish or subscribe to event on a topic.
+   </lead>
+   <description>
+A bundle's authority to publish or subscribe to event on a topic.
+ 
+ <p>
+ A topic is a slash-separated string that defines a topic.
+ </p><p>
+ For example:
+ 
+ </p><pre>&#8194;org/osgi/service/foo/FooEvent/ACTION</pre>
+ 
+ <p>
+ {@code TopicPermission} has two actions: {@code publish} and
+ {@code subscribe}.</p>
+   </description>
+<ThreadSafe></ThreadSafe><author>@author $Id: 14ef62cb63cf763529bcb4ce1db502bb82cc151f $</author>
+    <method name='TopicPermission' fqn='org.osgi.service.event.TopicPermission.TopicPermission' qn='TopicPermission.TopicPermission(String,String)' package='org.osgi.service.event' typeArgs='' modifiers='public' signature='(java.lang.String,java.lang.String)' flatSignature='(String,String)' isConstructor='true'>
+   <lead>
+Defines the authority to publish and/or subscribe to a topic within the
+ EventAdmin service.
+   </lead>
+   <description>
+Defines the authority to publish and/or subscribe to a topic within the
+ EventAdmin service.
+ <p>
+ The name is specified as a slash-separated string. Wildcards may be used.
+ For example:
+ 
+ </p><pre>&#8194;&#8194;&#8194;&#8194;org/osgi/service/fooFooEvent/ACTION<br/>&#8194;&#8194;&#8194;&#8194;com/isv/*<br/>&#8194;&#8194;&#8194;&#8194;*</pre>
+ 
+ <p>
+ A bundle that needs to publish events on a topic must have the
+ appropriate {@code TopicPermission} for that topic; similarly, a bundle
+ that needs to subscribe to events on a topic must have the appropriate
+ {@code TopicPermssion} for that topic.
+ </p><p></p>
+   </description>
+
+<param name='name'>Topic name.</param>
+<param name='actions'>{@code publish},{@code subscribe} (canonical order).</param>
+
+
+
+
+    <parameter name='name' dimension='' typeName='String' fqn='java.lang.String' varargs='false'/>
+    <parameter name='actions' dimension='' typeName='String' fqn='java.lang.String' varargs='false'/>
+     </method>
+    <method name='implies' fqn='org.osgi.service.event.TopicPermission.implies' qn='TopicPermission.implies(Permission)' package='org.osgi.service.event' modifiers='public' typeName='boolean' qualifiedTypeName='boolean' typeArgs='' dimension='' signature='(java.security.Permission)' flatSignature='(Permission)'>
+<java.lang.Override></java.lang.Override>
+   <lead>
+Determines if the specified permission is implied by this object.
+   </lead>
+   <description>
+Determines if the specified permission is implied by this object.
+ 
+ <p>
+ This method checks that the topic name of the target is implied by the
+ topic name of this object. The list of {@code TopicPermission} actions
+ must either match or allow for the list of the target object to imply the
+ target {@code TopicPermission} action.
+ 
+ </p><pre>&#8194;&#8194;&#8194;&#8194;x/y/*,&quot;publish&quot;&#8194;-&gt;&#8194;x/y/z,&quot;publish&quot;&#8194;is&#8194;true<br/>&#8194;&#8194;&#8194;&#8194;*,&quot;subscribe&quot;&#8194;-&gt;&#8194;x/y,&quot;subscribe&quot;&#8194;&#8194;&#8194;is&#8194;true<br/>&#8194;&#8194;&#8194;&#8194;*,&quot;publish&quot;&#8194;-&gt;&#8194;x/y,&quot;subscribe&quot;&#8194;&#8194;&#8194;&#8194;&#8194;is&#8194;false<br/>&#8194;&#8194;&#8194;&#8194;x/y,&quot;publish&quot;&#8194;-&gt;&#8194;x/y/z,&quot;publish&quot;&#8194;&#8194;&#8194;is&#8194;false</pre>
+   </description>
+
+<param name='p'>The target permission to interrogate.</param>
+
+<return>{@code true} if the specified {@code TopicPermission} action is
+         implied by this object; {@code false} otherwise.</return>
+
+
+
+    <parameter name='p' dimension='' typeName='Permission' fqn='java.security.Permission' varargs='false'/>
+     </method>
+    <method name='getActions' fqn='org.osgi.service.event.TopicPermission.getActions' qn='TopicPermission.getActions()' package='org.osgi.service.event' modifiers='public' typeName='String' qualifiedTypeName='java.lang.String' typeArgs='' dimension='' signature='()' flatSignature='()'>
+<java.lang.Override></java.lang.Override>
+   <lead>
+Returns the canonical string representation of the
+ {@code TopicPermission} actions.
+   </lead>
+   <description>
+Returns the canonical string representation of the
+ {@code TopicPermission} actions.
+ 
+ <p>
+ Always returns present {@code TopicPermission} actions in the following
+ order: {@code publish},{@code subscribe}.</p>
+   </description>
+
+
+<return>Canonical string representation of the {@code TopicPermission}
+         actions.</return>
+
+
+
+     </method>
+    <method name='newPermissionCollection' fqn='org.osgi.service.event.TopicPermission.newPermissionCollection' qn='TopicPermission.newPermissionCollection()' package='org.osgi.service.event' modifiers='public' typeName='PermissionCollection' qualifiedTypeName='java.security.PermissionCollection' typeArgs='' dimension='' signature='()' flatSignature='()'>
+<java.lang.Override></java.lang.Override>
+   <lead>
+Returns a new {@code PermissionCollection} object suitable for storing
+ {@code TopicPermission} objects.
+   </lead>
+   <description>
+Returns a new {@code PermissionCollection} object suitable for storing
+ {@code TopicPermission} objects.
+   </description>
+
+
+<return>A new {@code PermissionCollection} object.</return>
+
+
+
+     </method>
+    <method name='equals' fqn='org.osgi.service.event.TopicPermission.equals' qn='TopicPermission.equals(Object)' package='org.osgi.service.event' modifiers='public' typeName='boolean' qualifiedTypeName='boolean' typeArgs='' dimension='' signature='(java.lang.Object)' flatSignature='(Object)'>
+<java.lang.Override></java.lang.Override>
+   <lead>
+Determines the equality of two {@code TopicPermission} objects.
+   </lead>
+   <description>
+Determines the equality of two {@code TopicPermission} objects.
+ 
+ This method checks that specified {@code TopicPermission} has the same
+ topic name and actions as this {@code TopicPermission} object.
+   </description>
+
+<param name='obj'>The object to test for equality with this
+        {@code TopicPermission} object.</param>
+
+<return>{@code true} if {@code obj} is a {@code TopicPermission}, and has
+         the same topic name and actions as this {@code TopicPermission}
+         object; {@code false} otherwise.</return>
+
+
+
+    <parameter name='obj' dimension='' typeName='Object' fqn='java.lang.Object' varargs='false'/>
+     </method>
+    <method name='hashCode' fqn='org.osgi.service.event.TopicPermission.hashCode' qn='TopicPermission.hashCode()' package='org.osgi.service.event' modifiers='public' typeName='int' qualifiedTypeName='int' typeArgs='' dimension='' signature='()' flatSignature='()'>
+<java.lang.Override></java.lang.Override>
+   <lead>
+Returns the hash code value for this object.
+   </lead>
+   <description>
+Returns the hash code value for this object.
+   </description>
+
+
+<return>A hash code value for this object.</return>
+
+
+
+     </method>
+    <field name='PUBLISH' fqn='org.osgi.service.event.TopicPermission.PUBLISH' qn='TopicPermission.PUBLISH' package='org.osgi.service.event' modifiers='public static final' typeName='String' qualifiedTypeName='java.lang.String' dimension='' constantValue='"publish"'>
+   <lead>
+The action string {@code publish}.
+   </lead>
+   <description>
+The action string {@code publish}.
+   </description>
+
+     </field>
+    <field name='SUBSCRIBE' fqn='org.osgi.service.event.TopicPermission.SUBSCRIBE' qn='TopicPermission.SUBSCRIBE' package='org.osgi.service.event' modifiers='public static final' typeName='String' qualifiedTypeName='java.lang.String' dimension='' constantValue='"subscribe"'>
+   <lead>
+The action string {@code subscribe}.
+   </lead>
+   <description>
+The action string {@code subscribe}.
+   </description>
+
+     </field>
+  </class>
+  </package>
+  <package name='org.osgi.service.event.annotations' fqn='org.osgi.service.event.annotations' qn='org.osgi.service.event.annotations'>
+<org.osgi.annotation.versioning.Version><value>1.4</value>
+</org.osgi.annotation.versioning.Version>
+   <lead>
+Event Admin Annotations Package Version 1.4.
+   </lead>
+   <description>
+Event Admin Annotations Package Version 1.4.
+ <p>
+ This package contains annotations that can be used to require the Event Admin
+ implementation.
+ </p><p>
+ Bundles should not normally need to import this package as the annotations
+ are only used at build-time.</p>
+   </description>
+<author>@author $Id: 729c8378bcda36e4da024021a5e4b413299a47ce $</author>
+  <class name='RequireEventAdmin' fqn='org.osgi.service.event.annotations.RequireEventAdmin' qn='RequireEventAdmin' package='org.osgi.service.event.annotations' typeParam='' modifiers='public abstract' kind='ANNOTATION'>
+<java.lang.annotation.Documented></java.lang.annotation.Documented>
+<java.lang.annotation.Retention><value>CLASS</value>
+</java.lang.annotation.Retention>
+<java.lang.annotation.Target><value><value>TYPE</value><value>PACKAGE</value></value>
+</java.lang.annotation.Target>
+<org.osgi.annotation.bundle.Requirement><namespace>osgi.implementation</namespace>
+<name>osgi.event</name>
+<version>1.4</version>
+</org.osgi.annotation.bundle.Requirement>
+   <lead>
+This annotation can be used to require the Event Admin implementation.
+   </lead>
+   <description>
+This annotation can be used to require the Event Admin implementation. It can
+ be used directly, or as a meta-annotation.
+ <p>
+ This annotation is applied to several of the Event Admin component property
+ type annotations meaning that it does not normally need to be applied to
+ Declarative Services components which use the Event Admin.</p>
+   </description>
+<author>@author $Id: 5629a98187d59b2654016142ee4970798692e69d $</author><since>@since 1.4</since>
+<implements name='Annotation' fqn='java.lang.annotation.Annotation' qn='Annotation' package='java.lang.annotation' local='org.osgi.service.event.annotations.RequireEventAdmin'/>
+  </class>
+  </package>
+  <package name='org.osgi.service.event.propertytypes' fqn='org.osgi.service.event.propertytypes' qn='org.osgi.service.event.propertytypes'>
+<org.osgi.annotation.versioning.Version><value>1.4</value>
+</org.osgi.annotation.versioning.Version>
+   <lead>
+Event Admin Component Property Types Package Version 1.4.
+   </lead>
+   <description>
+Event Admin Component Property Types Package Version 1.4.
+ <p>
+ When used as annotations, component property types are processed by tools to
+ generate Component Descriptions which are used at runtime.
+ </p><p>
+ Bundles wishing to use this package at runtime must list the package in the
+ Import-Package header of the bundle's manifest.
+ </p><p>
+ Example import for consumers using the API in this package:
+ </p><p>
+ {@code  Import-Package: org.osgi.service.event.propertytypes; version="[1.4,2.0)"}</p>
+   </description>
+<author>@author $Id: a4eadfdc1521ab4d8af7206716e6abd8a57f5dae $</author>
+  <class name='EventDelivery' fqn='org.osgi.service.event.propertytypes.EventDelivery' qn='EventDelivery' package='org.osgi.service.event.propertytypes' typeParam='' modifiers='public abstract' kind='ANNOTATION'>
+<org.osgi.service.component.annotations.ComponentPropertyType></org.osgi.service.component.annotations.ComponentPropertyType>
+<java.lang.annotation.Retention><value>CLASS</value>
+</java.lang.annotation.Retention>
+<java.lang.annotation.Target><value><value>TYPE</value></value>
+</java.lang.annotation.Target>
+<org.osgi.service.event.annotations.RequireEventAdmin></org.osgi.service.event.annotations.RequireEventAdmin>
+   <lead>
+Component Property Type for the {@link EventConstants#EVENT_DELIVERY} service
+ property of an {@link EventHandler} service.
+   </lead>
+   <description>
+Component Property Type for the {@link EventConstants#EVENT_DELIVERY} service
+ property of an {@link EventHandler} service.
+ <p>
+ This annotation can be used on an {@link EventHandler} component to declare
+ the value of the {@link EventConstants#EVENT_DELIVERY} service property.</p>
+   </description>
+<a>Component Property Types</a><author>@author $Id: 453ef6a12ae3016d0c9bc7be77c11c1500288269 $</author><since>@since 1.4</since>
+<implements name='Annotation' fqn='java.lang.annotation.Annotation' qn='Annotation' package='java.lang.annotation' local='org.osgi.service.event.propertytypes.EventDelivery'/>
+    <method name='value' fqn='org.osgi.service.event.propertytypes.EventDelivery.value' qn='EventDelivery.value()' package='org.osgi.service.event.propertytypes' modifiers='public abstract' typeName='String[]' qualifiedTypeName='java.lang.String[]' typeArgs='' dimension='[]' signature='()' flatSignature='()'>
+   <lead>
+Service property specifying the {@code Event} delivery qualities
+ requested by an {@link EventHandler} service.
+   </lead>
+   <description>
+Service property specifying the {@code Event} delivery qualities
+ requested by an {@link EventHandler} service.
+ <p>
+ The supported delivery qualities are:
+ </p><ul>
+ <li>{@link EventConstants#DELIVERY_ASYNC_ORDERED}</li>
+ <li>{@link EventConstants#DELIVERY_ASYNC_UNORDERED}}</li>
+ </ul>
+   </description>
+
+
+<return>The requested event delivery qualities.</return>
+
+
+<a href='#EventConstants.EVENT_DELIVERY'>EventConstants.EVENT_DELIVERY</a>
+     </method>
+  </class>
+  <class name='EventFilter' fqn='org.osgi.service.event.propertytypes.EventFilter' qn='EventFilter' package='org.osgi.service.event.propertytypes' typeParam='' modifiers='public abstract' kind='ANNOTATION'>
+<org.osgi.service.component.annotations.ComponentPropertyType></org.osgi.service.component.annotations.ComponentPropertyType>
+<java.lang.annotation.Retention><value>CLASS</value>
+</java.lang.annotation.Retention>
+<java.lang.annotation.Target><value><value>TYPE</value></value>
+</java.lang.annotation.Target>
+<org.osgi.service.event.annotations.RequireEventAdmin></org.osgi.service.event.annotations.RequireEventAdmin>
+   <lead>
+Component Property Type for the {@link EventConstants#EVENT_FILTER} service
+ property of an {@link EventHandler} service.
+   </lead>
+   <description>
+Component Property Type for the {@link EventConstants#EVENT_FILTER} service
+ property of an {@link EventHandler} service.
+ <p>
+ This annotation can be used on an {@link EventHandler} component to declare
+ the value of the {@link EventConstants#EVENT_FILTER} service property.</p>
+   </description>
+<a>Component Property Types</a><author>@author $Id: fde92d91eb6edbc729b6004f3a70f9c48caa697c $</author><since>@since 1.4</since>
+<implements name='Annotation' fqn='java.lang.annotation.Annotation' qn='Annotation' package='java.lang.annotation' local='org.osgi.service.event.propertytypes.EventFilter'/>
+    <method name='value' fqn='org.osgi.service.event.propertytypes.EventFilter.value' qn='EventFilter.value()' package='org.osgi.service.event.propertytypes' modifiers='public abstract' typeName='String' qualifiedTypeName='java.lang.String' typeArgs='' dimension='' signature='()' flatSignature='()'>
+   <lead>
+Service property specifying the {@code Event} filter to an
+ {@link EventHandler} service.
+   </lead>
+   <description>
+Service property specifying the {@code Event} filter to an
+ {@link EventHandler} service.
+   </description>
+
+
+<return>The event filter.</return>
+
+
+<a href='#EventConstants.EVENT_FILTER'>EventConstants.EVENT_FILTER</a>
+     </method>
+  </class>
+  <class name='EventTopics' fqn='org.osgi.service.event.propertytypes.EventTopics' qn='EventTopics' package='org.osgi.service.event.propertytypes' typeParam='' modifiers='public abstract' kind='ANNOTATION'>
+<org.osgi.service.component.annotations.ComponentPropertyType></org.osgi.service.component.annotations.ComponentPropertyType>
+<java.lang.annotation.Retention><value>CLASS</value>
+</java.lang.annotation.Retention>
+<java.lang.annotation.Target><value><value>TYPE</value></value>
+</java.lang.annotation.Target>
+<org.osgi.service.event.annotations.RequireEventAdmin></org.osgi.service.event.annotations.RequireEventAdmin>
+   <lead>
+Component Property Type for the {@link EventConstants#EVENT_TOPIC} service
+ property of an {@link EventHandler} service.
+   </lead>
+   <description>
+Component Property Type for the {@link EventConstants#EVENT_TOPIC} service
+ property of an {@link EventHandler} service.
+ <p>
+ This annotation can be used on an {@link EventHandler} component to declare
+ the values of the {@link EventConstants#EVENT_TOPIC} service property.</p>
+   </description>
+<a>Component Property Types</a><author>@author $Id: b390d139ab8f5a42c6513541e4d44918827a6231 $</author><since>@since 1.4</since>
+<implements name='Annotation' fqn='java.lang.annotation.Annotation' qn='Annotation' package='java.lang.annotation' local='org.osgi.service.event.propertytypes.EventTopics'/>
+    <method name='value' fqn='org.osgi.service.event.propertytypes.EventTopics.value' qn='EventTopics.value()' package='org.osgi.service.event.propertytypes' modifiers='public abstract' typeName='String[]' qualifiedTypeName='java.lang.String[]' typeArgs='' dimension='[]' signature='()' flatSignature='()'>
+   <lead>
+Service property specifying the {@code Event} topics of interest to an
+ {@link EventHandler} service.
+   </lead>
+   <description>
+Service property specifying the {@code Event} topics of interest to an
+ {@link EventHandler} service.
+   </description>
+
+
+<return>The event topics.</return>
+
+
+<a href='#EventConstants.EVENT_TOPIC'>EventConstants.EVENT_TOPIC</a>
+     </method>
+  </class>
+  </package>
+</top>

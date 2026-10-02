@@ -1,0 +1,15 @@
+org/osgi/service/event/EventAdmin.class
+org/osgi/service/event/EventProperties.class
+org/osgi/service/event/package-info.class
+org/osgi/service/event/propertytypes/EventTopics.class
+org/osgi/service/event/TopicPermissionCollection.class
+org/osgi/service/event/propertytypes/EventDelivery.class
+org/osgi/service/event/annotations/package-info.class
+org/osgi/service/event/propertytypes/EventFilter.class
+org/osgi/service/event/EventHandler.class
+org/osgi/service/event/Event$FilterProperties.class
+org/osgi/service/event/EventConstants.class
+org/osgi/service/event/Event.class
+org/osgi/service/event/TopicPermission.class
+org/osgi/service/event/annotations/RequireEventAdmin.class
+org/osgi/service/event/propertytypes/package-info.class

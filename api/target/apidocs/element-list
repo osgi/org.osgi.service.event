@@ -1,0 +1,3 @@
+org.osgi.service.event
+org.osgi.service.event.annotations
+org.osgi.service.event.propertytypes

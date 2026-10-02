@@ -1,0 +1,8 @@
+org/osgi/test/cases/event/secure/tb2/Activator$1.class
+org/osgi/test/cases/event/secure/tb1/Activator.class
+org/osgi/test/cases/event/secure/service/SenderService.class
+org/osgi/test/cases/event/secure/tb1/Activator$1.class
+org/osgi/test/cases/event/secure/junit/EventAdminTests.class
+org/osgi/test/cases/event/secure/service/ReceiverService.class
+org/osgi/test/cases/event/secure/tb1/Activator$2.class
+org/osgi/test/cases/event/secure/tb2/Activator.class

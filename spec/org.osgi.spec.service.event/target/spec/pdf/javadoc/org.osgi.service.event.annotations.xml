@@ -1,0 +1,63 @@
+<section xmlns="http://docbook.org/ns/docbook"
+         xreflabel="org.osgi.service.event.annotations"
+         version="5"
+         role="package"
+         xml:id="org.osgi.service.event.annotations">
+   <title>org.osgi.service.event.annotations</title>
+   <info>
+      <releaseinfo xml:id="org.osgi.service.event.annotations-version">Version 1.4</releaseinfo>
+      <edition xml:id="org.osgi.service.event.annotations-version.number">1.4</edition>
+   </info>
+   <para>
+Event Admin Annotations Package Version 1.4.
+ </para>
+   <para>
+ This package contains annotations that can be used to require the Event Admin
+ implementation.
+ </para>
+   <para>
+ Bundles should not normally need to import this package as the annotations
+ are only used at build-time.</para>
+   <section role="summary">
+      <title>Summary</title>
+      <itemizedlist>
+         <listitem>
+            <para>
+               <link linkend="org.osgi.service.event.annotations.RequireEventAdmin">
+                  <code>RequireEventAdmin</code>
+               </link> - 
+This annotation can be used to require the Event Admin implementation.
+   </para>
+         </listitem>
+      </itemizedlist>
+   </section>
+   <section xreflabel="RequireEventAdmin"
+            role="class"
+            xml:id="org.osgi.service.event.annotations.RequireEventAdmin">
+      <title>@RequireEventAdmin</title>
+      <para>
+This annotation can be used to require the Event Admin implementation. It can
+ be used directly, or as a meta-annotation.
+ </para>
+      <para>
+ This annotation is applied to several of the Event Admin component property
+ type annotations meaning that it does not normally need to be applied to
+ Declarative Services components which use the Event Admin.</para>
+      <formalpara role="parameter">
+         <title>Since</title>
+         <para>@since 1.4</para>
+      </formalpara>
+      <formalpara role="parameter">
+         <title>Retention</title>
+         <para>
+            <code>CLASS</code>
+         </para>
+      </formalpara>
+      <formalpara role="parameter">
+         <title>Target</title>
+         <para>
+            <code>TYPE</code>, <code>PACKAGE</code>
+         </para>
+      </formalpara>
+   </section>
+</section>
