@@ -17,13 +17,15 @@
  *******************************************************************************/
 package org.osgi.test.cases.event.secure.junit;
 
-import static org.osgi.test.support.OSGiTestCaseProperties.getScaling;
-import static org.osgi.test.support.OSGiTestCaseProperties.getTimeout;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.ServicePermission;
 import org.osgi.service.event.Event;
@@ -34,8 +36,8 @@ import org.osgi.service.permissionadmin.PermissionAdmin;
 import org.osgi.service.permissionadmin.PermissionInfo;
 import org.osgi.test.cases.event.secure.service.ReceiverService;
 import org.osgi.test.cases.event.secure.service.SenderService;
-import org.osgi.test.support.compatibility.DefaultTestBundleControl;
-import org.osgi.test.support.sleep.Sleep;
+import org.osgi.test.common.annotation.InjectBundleInstaller;
+import org.osgi.test.common.install.BundleInstaller;
 import org.osgi.util.tracker.ServiceTracker;
 
 /**
@@ -43,7 +45,10 @@ import org.osgi.util.tracker.ServiceTracker;
  *
  * @author $Id$
  */
-public class EventAdminTests extends DefaultTestBundleControl {
+public class EventAdminTests extends EventTestSupport {
+
+	@InjectBundleInstaller
+	BundleInstaller		installer;
 
 	EventAdmin											eventAdmin;
 	PermissionAdmin										permissionAdmin;
@@ -59,15 +64,16 @@ public class EventAdminTests extends DefaultTestBundleControl {
 	 *
 	 * @throws Exception
 	 */
-	protected void setUp() throws Exception {
-		tb1 = installBundle("tb1.jar");
-		tb2 = installBundle("tb2.jar");
+	@BeforeEach
+	public void setUp() throws Exception {
+		tb1 = installer.installBundle(context.getBundle().getEntry("tb1.jar"), true);
+		tb2 = installer.installBundle(context.getBundle().getEntry("tb2.jar"), true);
 		eventAdmin = getService(EventAdmin.class);
 		permissionAdmin = getService(PermissionAdmin.class);
-		senderServiceTracker = new ServiceTracker<SenderService, SenderService>(getContext(), SenderService.class,
+		senderServiceTracker = new ServiceTracker<SenderService, SenderService>(context, SenderService.class,
 				null);
 		senderServiceTracker.open();
-		receiverServiceTracker = new ServiceTracker<ReceiverService, ReceiverService>(getContext(),
+		receiverServiceTracker = new ServiceTracker<ReceiverService, ReceiverService>(context,
 				ReceiverService.class, null);
 		receiverServiceTracker.open();
 	}
@@ -78,18 +84,20 @@ public class EventAdminTests extends DefaultTestBundleControl {
 	 *
 	 * @throws Exception
 	 */
-	protected void tearDown() throws Exception {
+	@AfterEach
+	public void tearDown() throws Exception {
 		senderServiceTracker.close();
 		receiverServiceTracker.close();
 		tb1.stop();
 		tb2.stop();
-		uninstallBundle(tb1);
-		uninstallBundle(tb2);
+		tb1.uninstall();
+		tb2.uninstall();
 		permissionAdmin.setPermissions(tb1.getLocation(), null);
 		permissionAdmin.setPermissions(tb2.getLocation(), null);
 		ungetAllServices();
 	}
 
+	@Test
 	public void testSendSuccess() throws Exception {
 		setPermissions(tb1,
 				new PermissionInfo[] {
@@ -113,21 +121,22 @@ public class EventAdminTests extends DefaultTestBundleControl {
 		tb2.start();
 
 		SenderService senderService = senderServiceTracker.waitForService(timeout);
-		assertNotNull("missing SenderService", senderService);
+		assertThat(senderService).as("missing SenderService").isNotNull();
 
 		ReceiverService receiverService = receiverServiceTracker.waitForService(timeout);
-		assertNotNull("missing ReceiverService", receiverService);
+		assertThat(receiverService).as("missing ReceiverService").isNotNull();
 
 		String topic = "org/osgi/test/cases/event/ACTION1";
 		receiverService.setTopics(topic);
 		Event event1 = new Event(topic, emptyMap());
 		senderService.sendEvent(event1);
 		List<Event> received = receiverService.getLastReceivedEvents();
-		assertEquals("wrong number of events", 1, received.size());
+		assertThat(received).as("wrong number of events").hasSize(1);
 		Event e = received.get(0);
-		assertEquals("event has wrong topic", topic, e.getTopic());
+		assertThat(e.getTopic()).as("event has wrong topic").isEqualTo(topic);
 	}
 
+	@Test
 	public void testPostSuccess() throws Exception {
 		setPermissions(tb1,
 				new PermissionInfo[] {
@@ -151,22 +160,23 @@ public class EventAdminTests extends DefaultTestBundleControl {
 		tb2.start();
 
 		SenderService senderService = senderServiceTracker.waitForService(timeout);
-		assertNotNull("missing SenderService", senderService);
+		assertThat(senderService).as("missing SenderService").isNotNull();
 
 		ReceiverService receiverService = receiverServiceTracker.waitForService(timeout);
-		assertNotNull("missing ReceiverService", receiverService);
+		assertThat(receiverService).as("missing ReceiverService").isNotNull();
 
 		String topic = "org/osgi/test/cases/event/ACTION1";
 		receiverService.setTopics(topic);
 		Event event1 = new Event(topic, emptyMap());
 		senderService.postEvent(event1);
-		Sleep.sleep(2000L * getScaling());
+		Thread.sleep(2000L * getScaling());
 		List<Event> received = receiverService.getLastReceivedEvents();
-		assertEquals("wrong number of events", 1, received.size());
+		assertThat(received).as("wrong number of events").hasSize(1);
 		Event e = received.get(0);
-		assertEquals("event has wrong topic", topic, e.getTopic());
+		assertThat(e.getTopic()).as("event has wrong topic").isEqualTo(topic);
 	}
 
+	@Test
 	public void testSendNoPublishPermission() throws Exception {
 		setPermissions(tb1,
 				new PermissionInfo[] {
@@ -190,10 +200,10 @@ public class EventAdminTests extends DefaultTestBundleControl {
 		tb2.start();
 
 		SenderService senderService = senderServiceTracker.waitForService(timeout);
-		assertNotNull("missing SenderService", senderService);
+		assertThat(senderService).as("missing SenderService").isNotNull();
 
 		ReceiverService receiverService = receiverServiceTracker.waitForService(timeout);
-		assertNotNull("missing ReceiverService", receiverService);
+		assertThat(receiverService).as("missing ReceiverService").isNotNull();
 
 		String topic = "org/osgi/test/cases/event/ACTION1";
 		receiverService.setTopics(topic);
@@ -206,9 +216,10 @@ public class EventAdminTests extends DefaultTestBundleControl {
 			// expected
 		}
 		List<Event> received = receiverService.getLastReceivedEvents();
-		assertEquals("wrong number of events", 0, received.size());
+		assertThat(received).as("wrong number of events").isEmpty();
 	}
 
+	@Test
 	public void testPostNoPublishPermission() throws Exception {
 		setPermissions(tb1,
 				new PermissionInfo[] {
@@ -232,10 +243,10 @@ public class EventAdminTests extends DefaultTestBundleControl {
 		tb2.start();
 
 		SenderService senderService = senderServiceTracker.waitForService(timeout);
-		assertNotNull("missing SenderService", senderService);
+		assertThat(senderService).as("missing SenderService").isNotNull();
 
 		ReceiverService receiverService = receiverServiceTracker.waitForService(timeout);
-		assertNotNull("missing ReceiverService", receiverService);
+		assertThat(receiverService).as("missing ReceiverService").isNotNull();
 
 		String topic = "org/osgi/test/cases/event/ACTION1";
 		receiverService.setTopics(topic);
@@ -247,11 +258,12 @@ public class EventAdminTests extends DefaultTestBundleControl {
 		catch (SecurityException e) {
 			// expected
 		}
-		Sleep.sleep(2000L * getScaling());
+		Thread.sleep(2000L * getScaling());
 		List<Event> received = receiverService.getLastReceivedEvents();
-		assertEquals("wrong number of events", 0, received.size());
+		assertThat(received).as("wrong number of events").isEmpty();
 	}
 
+	@Test
 	public void testReceiveNoSubscribePermission() throws Exception {
 		setPermissions(tb1,
 				new PermissionInfo[] {
@@ -275,26 +287,26 @@ public class EventAdminTests extends DefaultTestBundleControl {
 		tb2.start();
 
 		SenderService senderService = senderServiceTracker.waitForService(timeout);
-		assertNotNull("missing SenderService", senderService);
+		assertThat(senderService).as("missing SenderService").isNotNull();
 
 		ReceiverService receiverService = receiverServiceTracker.waitForService(timeout);
-		assertNotNull("missing ReceiverService", receiverService);
+		assertThat(receiverService).as("missing ReceiverService").isNotNull();
 
 		String topic = "org/osgi/test/cases/event/ACTION1";
 		receiverService.setTopics(topic);
 		Event event1 = new Event(topic, emptyMap());
 		senderService.sendEvent(event1);
 		List<Event> received = receiverService.getLastReceivedEvents();
-		assertEquals("wrong number of events", 0, received.size());
+		assertThat(received).as("wrong number of events").isEmpty();
 	}
 
 	private void setPermissions(Bundle bundle, PermissionInfo[] newPerm) {
 		permissionAdmin.setPermissions(bundle.getLocation(), newPerm);
 
 		PermissionInfo[] perms = permissionAdmin.getPermissions(bundle.getLocation());
-		pass("Permissions of [" + bundle.getLocation() + "]");
+		System.out.println("Permissions of [" + bundle.getLocation() + "]");
 		for (int i = 0; i < perms.length; i++) {
-			pass("permission [" + i + "]: " + perms[i]);
+			System.out.println("permission [" + i + "]: " + perms[i]);
 		}
 	}
 

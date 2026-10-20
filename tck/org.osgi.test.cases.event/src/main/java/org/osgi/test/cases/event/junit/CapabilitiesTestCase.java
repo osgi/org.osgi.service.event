@@ -21,12 +21,14 @@ package org.osgi.test.cases.event.junit;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
+import java.util.Arrays;
 import java.util.List;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
 import org.osgi.framework.Version;
 import org.osgi.framework.wiring.BundleCapability;
 import org.osgi.framework.wiring.BundleWiring;
@@ -34,11 +36,12 @@ import org.osgi.namespace.implementation.ImplementationNamespace;
 import org.osgi.namespace.service.ServiceNamespace;
 import org.osgi.resource.Namespace;
 import org.osgi.service.event.EventAdmin;
-import org.osgi.test.support.junit4.AbstractOSGiTestCase;
-import org.osgi.test.support.string.Strings;
+import org.osgi.test.common.annotation.InjectBundleContext;
 import org.osgi.util.tracker.ServiceTracker;
 
-public class CapabilitiesTestCase extends AbstractOSGiTestCase {
+public class CapabilitiesTestCase {
+	@InjectBundleContext
+	BundleContext									context;
 	private static final Version					VERSION	= new Version(1, 4,
 			0);
 	private static final String						PACKAGE	= "org.osgi.service.event";
@@ -48,12 +51,12 @@ public class CapabilitiesTestCase extends AbstractOSGiTestCase {
 	private ServiceTracker<EventAdmin,EventAdmin>	eaTracker;
 	private BundleWiring							wiring;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
-		eaTracker = new ServiceTracker<>(getContext(),
+		eaTracker = new ServiceTracker<>(context,
 				EventAdmin.class.getName(), null);
 		eaTracker.open();
-		assertThat(eaTracker.size()).as("EventAdmin services").isEqualTo(1);
+		assertThat(eaTracker.size()).as("EventAdmin services").isOne();
 		Bundle impl = eaTracker.getServiceReference().getBundle();
 		assertThat(impl).as("EventAdmin implementation bundle").isNotNull();
 		wiring = impl.adapt(BundleWiring.class);
@@ -62,7 +65,7 @@ public class CapabilitiesTestCase extends AbstractOSGiTestCase {
 				.isNotNull();
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		eaTracker.close();
 	}
@@ -87,7 +90,7 @@ public class CapabilitiesTestCase extends AbstractOSGiTestCase {
 						.containsKey(Namespace.CAPABILITY_USES_DIRECTIVE);
 				String uses = implementation.getDirectives()
 						.get(Namespace.CAPABILITY_USES_DIRECTIVE);
-				assertThat(Strings.split(uses)).as("capability uses directive")
+				assertThat(Arrays.asList(uses.trim().split("\\s*,\\s*"))).as("capability uses directive")
 						.contains(PACKAGE);
 				return;
 			}
@@ -111,7 +114,7 @@ public class CapabilitiesTestCase extends AbstractOSGiTestCase {
 						.containsKey(Namespace.CAPABILITY_USES_DIRECTIVE);
 				String uses = service.getDirectives()
 						.get(Namespace.CAPABILITY_USES_DIRECTIVE);
-				assertThat(Strings.split(uses)).as("capability uses directive")
+				assertThat(Arrays.asList(uses.trim().split("\\s*,\\s*"))).as("capability uses directive")
 						.contains(PACKAGE);
 				return;
 			}
