@@ -18,20 +18,25 @@
 
 package org.osgi.test.cases.event.junit;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
+import static org.osgi.test.cases.event.junit.EventTestSupport.assertConstant;
+
 import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
+import org.junit.jupiter.api.Test;
 import org.osgi.framework.Filter;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventConstants;
 import org.osgi.service.event.EventProperties;
-import org.osgi.test.support.OSGiTestCase;
 
-public class EventTests extends OSGiTestCase {
+public class EventTests {
 
+	@Test
 	public void testIllegalTopics() {
 		String[] illegalTopics = new String[] {"", "*", "/error_topic",
 				"//error_topic1", "é/error_topic2", "topic/error_topic3/",
@@ -51,6 +56,7 @@ public class EventTests extends OSGiTestCase {
 		}
 	}
 
+	@Test
 	public void testTopics() throws Exception {
 		String[] legalTopics = new String[] {"ACTION0",
 				"org/osgi/test/cases/event/ACTION1",
@@ -67,16 +73,17 @@ public class EventTests extends OSGiTestCase {
 				fail("Exception in event construction with topic:[" + topic
 						+ "]", e);
 			}
-			assertEquals("topic not set", new String(topic), event.getTopic());
-			assertEquals("topic not in properties", topic, event
-					.getProperty("event.topics"));
-			assertEquals("wrong amount of properties", 1, event
-					.getPropertyNames().length);
-			assertTrue("filter does not match", event.matches(FrameworkUtil
-					.createFilter("(event.topics=" + topic + ")")));
+			assertThat(event.getTopic()).as("topic not set").isEqualTo(new String(topic));
+			assertThat(event
+					.getProperty("event.topics")).as("topic not in properties").isEqualTo(topic);
+			assertThat(event
+					.getPropertyNames().length).as("wrong amount of properties").isOne();
+			assertThat(event.matches(FrameworkUtil
+					.createFilter("(event.topics=" + topic + ")"))).as("filter does not match").isTrue();
 		}
 	}
 
+	@Test
 	public void testProperties() throws Exception {
 		assertConstant("event.topics", "EVENT_TOPIC", EventConstants.class);
 		String t1 = "a/b";
@@ -105,53 +112,51 @@ public class EventTests extends OSGiTestCase {
 		Event e2 = new Event(t1, (Dictionary<String, ? >) m2);
 		Event e3 = new Event(t1, m3);
 
-		assertEquals("topic not set", new String(t1), e1.getTopic());
-		assertEquals("topic not set", new String(t1), e2.getTopic());
-		assertEquals("topic not set", new String(t1), e3.getTopic());
+		assertThat(e1.getTopic()).as("topic not set").isEqualTo(new String(t1));
+		assertThat(e2.getTopic()).as("topic not set").isEqualTo(new String(t1));
+		assertThat(e3.getTopic()).as("topic not set").isEqualTo(new String(t1));
 
-		assertEquals("topic not in properties", t1, e1
-				.getProperty("event.topics"));
-		assertEquals("topic not in properties", t1, e2
-				.getProperty("event.topics"));
-		assertEquals("topic not in properties", t1, e3
-				.getProperty("event.topics"));
+		assertThat(e1
+				.getProperty("event.topics")).as("topic not in properties").isEqualTo(t1);
+		assertThat(e2
+				.getProperty("event.topics")).as("topic not in properties").isEqualTo(t1);
+		assertThat(e3
+				.getProperty("event.topics")).as("topic not in properties").isEqualTo(t1);
 
-		assertEquals("foo property value != bar", "bar", e1.getProperty("foo"));
-		assertEquals("foo property value != bar", "bar", e2.getProperty("foo"));
-		assertEquals("foo property value != bar", "bar", e3.getProperty("foo"));
+		assertThat(e1.getProperty("foo")).as("foo property value != bar").isEqualTo("bar");
+		assertThat(e2.getProperty("foo")).as("foo property value != bar").isEqualTo("bar");
+		assertThat(e3.getProperty("foo")).as("foo property value != bar").isEqualTo("bar");
 
-		assertEquals("wrong amount of properties", 3,
-				e1.getPropertyNames().length);
-		assertEquals("wrong amount of properties", 3,
-				e2.getPropertyNames().length);
-		assertEquals("wrong amount of properties", 3,
-				e3.getPropertyNames().length);
+		assertThat(e1.getPropertyNames().length).as("wrong amount of properties").isEqualTo(3);
+		assertThat(e2.getPropertyNames().length).as("wrong amount of properties").isEqualTo(3);
+		assertThat(e3.getPropertyNames().length).as("wrong amount of properties").isEqualTo(3);
 
-		assertTrue("events not equal", e1.equals(e2));
-		assertTrue("events not equal", e1.equals(e3));
-		assertTrue("events not equal", e2.equals(e1));
-		assertTrue("events not equal", e2.equals(e3));
-		assertTrue("events not equal", e3.equals(e1));
-		assertTrue("events not equal", e3.equals(e2));
+		assertThat(e1.equals(e2)).as("events not equal").isTrue();
+		assertThat(e1.equals(e3)).as("events not equal").isTrue();
+		assertThat(e2.equals(e1)).as("events not equal").isTrue();
+		assertThat(e2.equals(e3)).as("events not equal").isTrue();
+		assertThat(e3.equals(e1)).as("events not equal").isTrue();
+		assertThat(e3.equals(e2)).as("events not equal").isTrue();
 
-		assertEquals("event hashcodes not equal", e1.hashCode(), e2.hashCode());
-		assertEquals("event hashcodes not equal", e1.hashCode(), e3.hashCode());
-		assertEquals("event hashcodes not equal", e2.hashCode(), e1.hashCode());
-		assertEquals("event hashcodes not equal", e2.hashCode(), e3.hashCode());
-		assertEquals("event hashcodes not equal", e3.hashCode(), e1.hashCode());
-		assertEquals("event hashcodes not equal", e3.hashCode(), e2.hashCode());
+		assertThat(e2.hashCode()).as("event hashcodes not equal").isEqualTo(e1.hashCode());
+		assertThat(e3.hashCode()).as("event hashcodes not equal").isEqualTo(e1.hashCode());
+		assertThat(e1.hashCode()).as("event hashcodes not equal").isEqualTo(e2.hashCode());
+		assertThat(e3.hashCode()).as("event hashcodes not equal").isEqualTo(e2.hashCode());
+		assertThat(e1.hashCode()).as("event hashcodes not equal").isEqualTo(e3.hashCode());
+		assertThat(e2.hashCode()).as("event hashcodes not equal").isEqualTo(e3.hashCode());
 
 		Filter f1 = FrameworkUtil.createFilter("(foo=bar)");
-		assertTrue("filter does not match", e1.matches(f1));
-		assertTrue("filter does not match", e2.matches(f1));
-		assertTrue("filter does not match", e3.matches(f1));
+		assertThat(e1.matches(f1)).as("filter does not match").isTrue();
+		assertThat(e2.matches(f1)).as("filter does not match").isTrue();
+		assertThat(e3.matches(f1)).as("filter does not match").isTrue();
 
 		Filter f2 = FrameworkUtil.createFilter("(event.topics=" + t1 + ")");
-		assertTrue("filter does not match", e1.matches(f2));
-		assertTrue("filter does not match", e2.matches(f2));
-		assertTrue("filter does not match", e3.matches(f2));
+		assertThat(e1.matches(f2)).as("filter does not match").isTrue();
+		assertThat(e2.matches(f2)).as("filter does not match").isTrue();
+		assertThat(e3.matches(f2)).as("filter does not match").isTrue();
 	}
 
+	@Test
 	public void testEventsEquals() {
 		String t1 = "a/b";
 		Map<String,Object> m1 = new HashMap<>();
@@ -174,22 +179,23 @@ public class EventTests extends OSGiTestCase {
 		Event e2 = new Event(t1, (Dictionary<String, ? >) m2);
 		Event e3 = new Event(t1, m3);
 
-		assertFalse("events equal", e1.equals(e2));
-		assertFalse("events equal", e1.equals(e3));
-		assertFalse("events equal", e2.equals(e1));
-		assertFalse("events equal", e2.equals(e3));
-		assertFalse("events equal", e3.equals(e1));
-		assertFalse("events equal", e3.equals(e2));
+		assertThat(e1.equals(e2)).as("events equal").isFalse();
+		assertThat(e1.equals(e3)).as("events equal").isFalse();
+		assertThat(e2.equals(e1)).as("events equal").isFalse();
+		assertThat(e2.equals(e3)).as("events equal").isFalse();
+		assertThat(e3.equals(e1)).as("events equal").isFalse();
+		assertThat(e3.equals(e2)).as("events equal").isFalse();
 
-		assertFalse("event hashcodes equal", e1.hashCode() == e2.hashCode());
-		assertFalse("event hashcodes equal", e1.hashCode() == e3.hashCode());
-		assertFalse("event hashcodes equal", e2.hashCode() == e1.hashCode());
-		assertFalse("event hashcodes equal", e2.hashCode() == e3.hashCode());
-		assertFalse("event hashcodes equal", e3.hashCode() == e1.hashCode());
-		assertFalse("event hashcodes equal", e3.hashCode() == e2.hashCode());
+		assertThat(e1.hashCode() == e2.hashCode()).as("event hashcodes equal").isFalse();
+		assertThat(e1.hashCode() == e3.hashCode()).as("event hashcodes equal").isFalse();
+		assertThat(e2.hashCode() == e1.hashCode()).as("event hashcodes equal").isFalse();
+		assertThat(e2.hashCode() == e3.hashCode()).as("event hashcodes equal").isFalse();
+		assertThat(e3.hashCode() == e1.hashCode()).as("event hashcodes equal").isFalse();
+		assertThat(e3.hashCode() == e2.hashCode()).as("event hashcodes equal").isFalse();
 
 	}
 
+	@Test
 	public void testContainsProperty() {
 		String t1 = "a/b";
 		Map<Object,Object> m1 = new HashMap<>();
@@ -210,18 +216,19 @@ public class EventTests extends OSGiTestCase {
 		Event e1 = new Event(t1, (Map) m1);
 		Event e2 = new Event(t1, (Dictionary<String, ? >) m2);
 		Event e3 = new Event(t1, m3);
-		assertTrue("foo property not in properties", e1.containsProperty("foo"));
-		assertTrue("foo property not in properties", e2.containsProperty("foo"));
-		assertTrue("foo property not in properties", e3.containsProperty("foo"));
+		assertThat(e1.containsProperty("foo")).as("foo property not in properties").isTrue();
+		assertThat(e2.containsProperty("foo")).as("foo property not in properties").isTrue();
+		assertThat(e3.containsProperty("foo")).as("foo property not in properties").isTrue();
 
-		assertFalse("bar property not in properties", e1
-				.containsProperty("bar"));
-		assertFalse("bar property not in properties", e2
-				.containsProperty("bar"));
-		assertFalse("bar property not in properties", e3
-				.containsProperty("bar"));
+		assertThat(e1
+				.containsProperty("bar")).as("bar property not in properties").isFalse();
+		assertThat(e2
+				.containsProperty("bar")).as("bar property not in properties").isFalse();
+		assertThat(e3
+				.containsProperty("bar")).as("bar property not in properties").isFalse();
 	}
 
+	@Test
 	public void testEventProperties() throws Exception {
 		String t1 = "a/b";
 		Map<Object,Object> m1 = new HashMap<>();
@@ -241,24 +248,24 @@ public class EventTests extends OSGiTestCase {
 		})
 		EventProperties p2 = new EventProperties((Map) m1);
 
-		assertTrue("eventproperties not equal", p1.equals(p2));
-		assertTrue("eventproperties not equal", p2.equals(p1));
+		assertThat(p1.equals(p2)).as("eventproperties not equal").isTrue();
+		assertThat(p2.equals(p1)).as("eventproperties not equal").isTrue();
 
-		assertEquals("eventproperties hashcodes not equal", p1.hashCode(), p2
-				.hashCode());
-		assertEquals("eventproperties hashcodes not equal", p2.hashCode(), p1
-				.hashCode());
-		assertEquals("wrong amount of properties", 2, p1.size());
-		assertEquals("wrong amount of properties", 2, p2.size());
-		assertEquals("wrong amount of properties", 2, p1.keySet().size());
-		assertEquals("wrong amount of properties", 2, p2.keySet().size());
-		assertEquals("wrong amount of properties", 2, p1.values().size());
-		assertEquals("wrong amount of properties", 2, p2.values().size());
-		assertEquals("wrong amount of properties", 2, p1.entrySet().size());
-		assertEquals("wrong amount of properties", 2, p2.entrySet().size());
-		assertFalse("empty", p1.isEmpty());
-		assertFalse("empty", p2.isEmpty());
-		assertTrue("not empty", new EventProperties(null).isEmpty());
+		assertThat(p2
+				.hashCode()).as("eventproperties hashcodes not equal").isEqualTo(p1.hashCode());
+		assertThat(p1
+				.hashCode()).as("eventproperties hashcodes not equal").isEqualTo(p2.hashCode());
+		assertThat(p1.size()).as("wrong amount of properties").isEqualTo(2);
+		assertThat(p2.size()).as("wrong amount of properties").isEqualTo(2);
+		assertThat(p1.keySet()).as("wrong amount of properties").hasSize(2);
+		assertThat(p2.keySet()).as("wrong amount of properties").hasSize(2);
+		assertThat(p1.values()).as("wrong amount of properties").hasSize(2);
+		assertThat(p2.values()).as("wrong amount of properties").hasSize(2);
+		assertThat(p1.entrySet()).as("wrong amount of properties").hasSize(2);
+		assertThat(p2.entrySet()).as("wrong amount of properties").hasSize(2);
+		assertThat(p1.isEmpty()).as("empty").isFalse();
+		assertThat(p2.isEmpty()).as("empty").isFalse();
+		assertThat(new EventProperties(null).isEmpty()).as("not empty").isTrue();
 
 		try {
 			p1.clear();
@@ -317,71 +324,68 @@ public class EventTests extends OSGiTestCase {
 			// expected
 		}
 
-		assertFalse("contains event.topics key", p1.containsKey("event.topics"));
-		assertTrue("foo key not present", p1.containsKey("foo"));
-		assertFalse("baz value not present", p1.containsValue("baz"));
-		assertTrue("bar value not present", p1.containsValue("bar"));
+		assertThat(p1.containsKey("event.topics")).as("contains event.topics key").isFalse();
+		assertThat(p1.containsKey("foo")).as("foo key not present").isTrue();
+		assertThat(p1.containsValue("baz")).as("baz value not present").isFalse();
+		assertThat(p1.containsValue("bar")).as("bar value not present").isTrue();
 
 		Event e1 = new Event(t1, p1);
 		Event e2 = new Event(t1, p1);
 		Event e3 = new Event(t1, p1);
 
-		assertEquals("topic not set", new String(t1), e1.getTopic());
-		assertEquals("topic not set", new String(t1), e2.getTopic());
-		assertEquals("topic not set", new String(t1), e3.getTopic());
+		assertThat(e1.getTopic()).as("topic not set").isEqualTo(new String(t1));
+		assertThat(e2.getTopic()).as("topic not set").isEqualTo(new String(t1));
+		assertThat(e3.getTopic()).as("topic not set").isEqualTo(new String(t1));
 
-		assertEquals("topic not in properties", t1, e1
-				.getProperty("event.topics"));
-		assertEquals("topic not in properties", t1, e2
-				.getProperty("event.topics"));
-		assertEquals("topic not in properties", t1, e3
-				.getProperty("event.topics"));
+		assertThat(e1
+				.getProperty("event.topics")).as("topic not in properties").isEqualTo(t1);
+		assertThat(e2
+				.getProperty("event.topics")).as("topic not in properties").isEqualTo(t1);
+		assertThat(e3
+				.getProperty("event.topics")).as("topic not in properties").isEqualTo(t1);
 
-		assertEquals("foo property value != bar", "bar", e1.getProperty("foo"));
-		assertEquals("foo property value != bar", "bar", e2.getProperty("foo"));
-		assertEquals("foo property value != bar", "bar", e3.getProperty("foo"));
+		assertThat(e1.getProperty("foo")).as("foo property value != bar").isEqualTo("bar");
+		assertThat(e2.getProperty("foo")).as("foo property value != bar").isEqualTo("bar");
+		assertThat(e3.getProperty("foo")).as("foo property value != bar").isEqualTo("bar");
 
-		assertEquals("wrong amount of properties", 3,
-				e1.getPropertyNames().length);
-		assertEquals("wrong amount of properties", 3,
-				e2.getPropertyNames().length);
-		assertEquals("wrong amount of properties", 3,
-				e3.getPropertyNames().length);
+		assertThat(e1.getPropertyNames().length).as("wrong amount of properties").isEqualTo(3);
+		assertThat(e2.getPropertyNames().length).as("wrong amount of properties").isEqualTo(3);
+		assertThat(e3.getPropertyNames().length).as("wrong amount of properties").isEqualTo(3);
 
-		assertTrue("events not equal", e1.equals(e2));
-		assertTrue("events not equal", e1.equals(e3));
-		assertTrue("events not equal", e2.equals(e1));
-		assertTrue("events not equal", e2.equals(e3));
-		assertTrue("events not equal", e3.equals(e1));
-		assertTrue("events not equal", e3.equals(e2));
+		assertThat(e1.equals(e2)).as("events not equal").isTrue();
+		assertThat(e1.equals(e3)).as("events not equal").isTrue();
+		assertThat(e2.equals(e1)).as("events not equal").isTrue();
+		assertThat(e2.equals(e3)).as("events not equal").isTrue();
+		assertThat(e3.equals(e1)).as("events not equal").isTrue();
+		assertThat(e3.equals(e2)).as("events not equal").isTrue();
 
-		assertEquals("event hashcodes not equal", e1.hashCode(), e2.hashCode());
-		assertEquals("event hashcodes not equal", e1.hashCode(), e3.hashCode());
-		assertEquals("event hashcodes not equal", e2.hashCode(), e1.hashCode());
-		assertEquals("event hashcodes not equal", e2.hashCode(), e3.hashCode());
-		assertEquals("event hashcodes not equal", e3.hashCode(), e1.hashCode());
-		assertEquals("event hashcodes not equal", e3.hashCode(), e2.hashCode());
+		assertThat(e2.hashCode()).as("event hashcodes not equal").isEqualTo(e1.hashCode());
+		assertThat(e3.hashCode()).as("event hashcodes not equal").isEqualTo(e1.hashCode());
+		assertThat(e1.hashCode()).as("event hashcodes not equal").isEqualTo(e2.hashCode());
+		assertThat(e3.hashCode()).as("event hashcodes not equal").isEqualTo(e2.hashCode());
+		assertThat(e1.hashCode()).as("event hashcodes not equal").isEqualTo(e3.hashCode());
+		assertThat(e2.hashCode()).as("event hashcodes not equal").isEqualTo(e3.hashCode());
 
 		Filter f1 = FrameworkUtil.createFilter("(baz=bar)");
-		assertTrue("filter does not match", e1.matches(f1));
-		assertTrue("filter does not match", e2.matches(f1));
-		assertTrue("filter does not match", e3.matches(f1));
+		assertThat(e1.matches(f1)).as("filter does not match").isTrue();
+		assertThat(e2.matches(f1)).as("filter does not match").isTrue();
+		assertThat(e3.matches(f1)).as("filter does not match").isTrue();
 
 		Filter f2 = FrameworkUtil.createFilter("(event.topics=" + t1 + ")");
-		assertTrue("filter does not match", e1.matches(f2));
-		assertTrue("filter does not match", e2.matches(f2));
-		assertTrue("filter does not match", e3.matches(f2));
+		assertThat(e1.matches(f2)).as("filter does not match").isTrue();
+		assertThat(e2.matches(f2)).as("filter does not match").isTrue();
+		assertThat(e3.matches(f2)).as("filter does not match").isTrue();
 
 		// change the value object to verify all events are sharing the same
 		// EventProperties.
 		Filter f3 = FrameworkUtil.createFilter("(baz=baz)");
-		assertFalse("filter does match", e1.matches(f3));
-		assertFalse("filter does match", e2.matches(f3));
-		assertFalse("filter does match", e3.matches(f3));
+		assertThat(e1.matches(f3)).as("filter does match").isFalse();
+		assertThat(e2.matches(f3)).as("filter does match").isFalse();
+		assertThat(e3.matches(f3)).as("filter does match").isFalse();
 		a1[1] = "baz";
-		assertTrue("filter does not match", e1.matches(f3));
-		assertTrue("filter does not match", e2.matches(f3));
-		assertTrue("filter does not match", e3.matches(f3));
+		assertThat(e1.matches(f3)).as("filter does not match").isTrue();
+		assertThat(e2.matches(f3)).as("filter does not match").isTrue();
+		assertThat(e3.matches(f3)).as("filter does not match").isTrue();
 
 	}
 

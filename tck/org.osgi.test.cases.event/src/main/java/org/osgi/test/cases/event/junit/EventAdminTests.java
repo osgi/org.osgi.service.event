@@ -17,20 +17,26 @@
  *******************************************************************************/
 package org.osgi.test.cases.event.junit;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.List;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventAdmin;
 import org.osgi.service.event.EventConstants;
 import org.osgi.test.cases.event.service.TBCService;
-import org.osgi.test.support.compatibility.DefaultTestBundleControl;
-import org.osgi.test.support.sleep.Sleep;
+import org.osgi.test.common.annotation.InjectBundleInstaller;
+import org.osgi.test.common.install.BundleInstaller;
 import org.osgi.util.tracker.ServiceTracker;
 
 /**
@@ -40,7 +46,10 @@ import org.osgi.util.tracker.ServiceTracker;
  *
  * @author $Id$
  */
-public class EventAdminTests extends DefaultTestBundleControl {
+public class EventAdminTests extends EventTestSupport {
+
+	@InjectBundleInstaller
+	BundleInstaller		installer;
 
 	EventAdmin eventAdmin;
 	private Bundle tb1;
@@ -52,11 +61,12 @@ public class EventAdminTests extends DefaultTestBundleControl {
 	 *
 	 * @throws Exception
 	 */
-	protected void setUp() throws Exception {
-		log("#before each run");
-		tb1 = installBundle("tb1.jar");
+	@BeforeEach
+	public void setUp() throws Exception {
+		System.out.println("#before each run");
+		tb1 = installer.installBundle(context.getBundle().getEntry("tb1.jar"), true);
 		tb1.start();
-		tb2 = installBundle("tb2.jar");
+		tb2 = installer.installBundle(context.getBundle().getEntry("tb2.jar"), true);
 		tb2.start();
 		eventAdmin = getService(EventAdmin.class);
 	}
@@ -67,12 +77,13 @@ public class EventAdminTests extends DefaultTestBundleControl {
 	 *
 	 * @throws Exception
 	 */
-	protected void tearDown() throws Exception {
-		log("#after each run");
+	@AfterEach
+	public void tearDown() throws Exception {
+		System.out.println("#after each run");
 		tb1.stop();
-		uninstallBundle(tb1);
+		tb1.uninstall();
 		tb2.stop();
-		uninstallBundle(tb2);
+		tb2.uninstall();
 		ungetAllServices();
 	}
 
@@ -87,33 +98,30 @@ public class EventAdminTests extends DefaultTestBundleControl {
 	 * @specification org.osgi.framework
 	 * @specificationSection system.bundle
 	 */
+	@Test
 	public void testInstallation() throws Exception {
 		ServiceTracker<TBCService,TBCService> trackerProvider1 = new ServiceTracker<>(
-				getContext(),
+				context,
 				"org.osgi.test.cases.event.tb1.Activator", null);
 		trackerProvider1.open();
 		TBCService tbcService1 = trackerProvider1.getService();
-		assertNotNull("TBCService service in tb1 should be registered",
-				tbcService1);
+		assertThat(tbcService1).as("TBCService service in tb1 should be registered").isNotNull();
 		trackerProvider1.close();
 
 		ServiceTracker<TBCService,TBCService> trackerProvider2 = new ServiceTracker<>(
-				getContext(),
+				context,
 				"org.osgi.test.cases.event.tb2.Activator", null);
 		trackerProvider2.open();
 		TBCService tbcService2 = trackerProvider2.getService();
-		assertNotNull("TBCService service in tb2 should be registered",
-				tbcService2);
+		assertThat(tbcService2).as("TBCService service in tb2 should be registered").isNotNull();
 		trackerProvider2.close();
 
-		ServiceReference< ? >[] eventAdminSRs = getContext()
+		ServiceReference< ? >[] eventAdminSRs = context
 				.getServiceReferences(
 				EventAdmin.class.getName(), null);
 		if (eventAdminSRs != null) {
-			assertEquals(
-					"There must be exactly one EventAdmin registered service ["
-							+ EventAdmin.class.getName() + "]", 1,
-					eventAdminSRs.length);
+			assertThat(eventAdminSRs.length).as("There must be exactly one EventAdmin registered service ["
+					+ EventAdmin.class.getName() + "]").isOne();
 		}
 	}
 
@@ -121,15 +129,16 @@ public class EventAdminTests extends DefaultTestBundleControl {
 	 * Tests the notification for events after sending (if they match of the
 	 * listeners).
 	 */
+	@Test
 	public void testSendEvent() { // TC4
 		ServiceTracker<TBCService,TBCService> trackerProvider1 = new ServiceTracker<>(
-				getContext(),
+				context,
 				"org.osgi.test.cases.event.tb1.Activator", null);
 		trackerProvider1.open();
 		TBCService tbcService1 = trackerProvider1.getService();
 
 		ServiceTracker<TBCService,TBCService> trackerProvider2 = new ServiceTracker<>(
-				getContext(),
+				context,
 				"org.osgi.test.cases.event.tb2.Activator", null);
 		trackerProvider2.open();
 		TBCService tbcService2 = trackerProvider2.getService();
@@ -159,9 +168,9 @@ public class EventAdminTests extends DefaultTestBundleControl {
 			event = new Event(events[i],
 					(Dictionary<String, ? >) new Hashtable<String,Object>());
 			eventAdmin.sendEvent(event);
-			pass("before 1");
+			System.out.println("before 1");
 			assertEvent(event, tb1, tbcService1, eventsMap1[i].booleanValue());
-			pass("before 2");
+			System.out.println("before 2");
 			assertEvent(event, tb2, tbcService2, eventsMap2[i].booleanValue());
 		}
 		trackerProvider1.close();
@@ -172,15 +181,16 @@ public class EventAdminTests extends DefaultTestBundleControl {
 	 * Tests the notification for events after posting (if they match of the
 	 * listeners).
 	 */
+	@Test
 	public void testPostEvent() { // TC5
 		ServiceTracker<TBCService,TBCService> trackerProvider1 = new ServiceTracker<>(
-				getContext(),
+				context,
 				"org.osgi.test.cases.event.tb1.Activator", null);
 		trackerProvider1.open();
 		TBCService tbcService1 = trackerProvider1.getService();
 
 		ServiceTracker<TBCService,TBCService> trackerProvider2 = new ServiceTracker<>(
-				getContext(),
+				context,
 				"org.osgi.test.cases.event.tb2.Activator", null);
 		trackerProvider2.open();
 		TBCService tbcService2 = trackerProvider2.getService();
@@ -201,7 +211,7 @@ public class EventAdminTests extends DefaultTestBundleControl {
 		}
 		// wait to ensure that events are received asynchronous
 		try {
-			Sleep.sleep(5000);
+			Thread.sleep(5000);
 		} catch (InterruptedException e) {
 		}
 
@@ -223,7 +233,7 @@ public class EventAdminTests extends DefaultTestBundleControl {
 				fail("tbc1: Event with topic [test/Event" + i
 						+ "] not recieved");
 			}
-			assertEquals(message, "test/Event" + i, event.getTopic());
+			assertThat(event.getTopic()).as(message).isEqualTo("test/Event" + i);
 		}
 		for (int i = 0; i < tbc2Events.size(); i++) {
 			event = tbc2Events.get(i);
@@ -231,7 +241,7 @@ public class EventAdminTests extends DefaultTestBundleControl {
 				fail("tbc2: Event with topic [test/Event" + i
 						+ "] not recieved");
 			}
-			assertEquals(message, "test/Event" + i, event.getTopic());
+			assertThat(event.getTopic()).as(message).isEqualTo("test/Event" + i);
 		}
 		trackerProvider1.close();
 		trackerProvider2.close();
@@ -241,15 +251,16 @@ public class EventAdminTests extends DefaultTestBundleControl {
 	 * Tests the notification for events after posting (if they match of the
 	 * listeners).
 	 */
+	@Test
 	public void testPostEventUnordered() { // TC5
 		ServiceTracker<TBCService,TBCService> trackerProvider1 = new ServiceTracker<>(
-				getContext(),
+				context,
 				"org.osgi.test.cases.event.tb1.Activator", null);
 		trackerProvider1.open();
 		TBCService tbcService1 = trackerProvider1.getService();
 
 		ServiceTracker<TBCService,TBCService> trackerProvider2 = new ServiceTracker<>(
-				getContext(),
+				context,
 				"org.osgi.test.cases.event.tb2.Activator", null);
 		trackerProvider2.open();
 		TBCService tbcService2 = trackerProvider2.getService();
@@ -270,7 +281,7 @@ public class EventAdminTests extends DefaultTestBundleControl {
 		}
 		// wait to ensure that events are received asynchronous
 		try {
-			Sleep.sleep(5000);
+			Thread.sleep(5000);
 		}
 		catch (InterruptedException e) {
 			// ignored
@@ -288,7 +299,7 @@ public class EventAdminTests extends DefaultTestBundleControl {
 
 		for (int i = 0; i < events.length; i++) {
 			if (tbc1Events.contains(events[i])) {
-				pass("tbc1: Event with topic [test/Event" + i + "] recieved");
+				System.out.println("tbc1: Event with topic [test/Event" + i + "] recieved");
 			}
 			else {
 				fail("tbc1: Event with topic [test/Event" + i
@@ -297,7 +308,7 @@ public class EventAdminTests extends DefaultTestBundleControl {
 		}
 		for (int i = 0; i < events.length; i++) {
 			if (tbc2Events.contains(events[i])) {
-				pass("tbc2: Event with topic [test/Event" + i + "] recieved");
+				System.out.println("tbc2: Event with topic [test/Event" + i + "] recieved");
 			}
 			else {
 				fail("tbc2: Event with topic [test/Event" + i
@@ -312,6 +323,7 @@ public class EventAdminTests extends DefaultTestBundleControl {
 	 * Tests the notification for events after posting simultaneously in 10
 	 * threads (if they match of the listeners).
 	 */
+	@Test
 	public void testMultiThreadsPostEvent() { // TC7
 		testMultiThreads(10, "postEvent");
 	}
@@ -332,7 +344,7 @@ public class EventAdminTests extends DefaultTestBundleControl {
 		}
 
 		public void run() {
-			trace("MultiThread started on event: " + event);
+			System.out.println("MultiThread started on event: " + event);
 			synchronized (lock) {
 				try {
 					lock.wait();
@@ -350,7 +362,7 @@ public class EventAdminTests extends DefaultTestBundleControl {
 					// unrecognized method
 				}
 			}
-			trace("MultiThread " + method
+			System.out.println("MultiThread " + method
 					+ " event: " + event);
 		}
 	}
@@ -359,6 +371,7 @@ public class EventAdminTests extends DefaultTestBundleControl {
 	 * Tests the notification for events after sending simultaneously in 10
 	 * threads (if they match of the listeners).
 	 */
+	@Test
 	public void testMultiThreadsSendEvent() { // TC6
 		testMultiThreads(10, "sendEvent");
 	}
@@ -369,13 +382,13 @@ public class EventAdminTests extends DefaultTestBundleControl {
 	 */
 	private void testMultiThreads(final int count, final String method) {
 		ServiceTracker<TBCService,TBCService> trackerProvider1 = new ServiceTracker<>(
-				getContext(),
+				context,
 				"org.osgi.test.cases.event.tb1.Activator", null);
 		trackerProvider1.open();
 		TBCService tbcService1 = trackerProvider1.getService();
 
 		ServiceTracker<TBCService,TBCService> trackerProvider2 = new ServiceTracker<>(
-				getContext(),
+				context,
 				"org.osgi.test.cases.event.tb2.Activator", null);
 		trackerProvider2.open();
 		TBCService tbcService2 = trackerProvider2.getService();
@@ -410,7 +423,7 @@ public class EventAdminTests extends DefaultTestBundleControl {
 				if (!mpts[i].isAlive()) {
 					allAlive = false;
 					try {
-						Sleep.sleep(100);
+						Thread.sleep(100);
 					}
 					catch (InterruptedException e) {
 						// ignored
@@ -421,20 +434,20 @@ public class EventAdminTests extends DefaultTestBundleControl {
 		} while (!allAlive);
 		// add small sleep to ensure all threads go to wait on lock
 		try {
-			Sleep.sleep(3000);
+			Thread.sleep(3000);
 		}
 		catch (InterruptedException e) {
 			// ignored
 		}
-		trace("All MultiThread started, notify all...");
+		System.out.println("All MultiThread started, notify all...");
 		// here notify all threads to start posting events simultaneously
 		synchronized (lock) {
 			lock.notifyAll();
 		}
-		trace("Wait all MultiThread to deliver events");
+		System.out.println("Wait all MultiThread to deliver events");
 		// wait to ensure that events are received asynchronous
 		try {
-			Sleep.sleep(5000);
+			Thread.sleep(5000);
 		}
 		catch (InterruptedException e) {
 			// ignored
@@ -452,7 +465,7 @@ public class EventAdminTests extends DefaultTestBundleControl {
 
 		for (int i = 0; i < events.length; i++) {
 			if (tbc1Events.contains(events[i])) {
-				pass("tbc1: Event with topic [test/Event" + i + "] received");
+				System.out.println("tbc1: Event with topic [test/Event" + i + "] received");
 			}
 			else {
 				fail("tbc1: Event with topic [test/Event" + i
@@ -461,7 +474,7 @@ public class EventAdminTests extends DefaultTestBundleControl {
 		}
 		for (int i = 0; i < events.length; i++) {
 			if (tbc2Events.contains(events[i])) {
-				pass("tbc2: Event with topic [test/Event" + i + "] received");
+				System.out.println("tbc2: Event with topic [test/Event" + i + "] received");
 			}
 			else {
 				fail("tbc2: Event with topic [test/Event" + i
@@ -474,12 +487,12 @@ public class EventAdminTests extends DefaultTestBundleControl {
 
 	private void assertEvent(Event eventPassed, Bundle bundle,
 			TBCService tbcService, boolean recieved) {
-		pass(">>>Passed event: " + eventPassed);
+		System.out.println(">>>Passed event: " + eventPassed);
 		// pass("Bundle's event handler topic: " +
 		// arrayToString(tbcService.getTopics()));
 		Event eventReceived = tbcService.getLastReceivedEvent();
-		assertEquals("In [" + bundle.getSymbolicName() + "] received event ["
-				+ eventReceived + "]", recieved, eventReceived != null);
+		assertThat(eventReceived != null).as("In [" + bundle.getSymbolicName() + "] received event ["
+				+ eventReceived + "]").isEqualTo(recieved);
 		if (eventReceived != null) {
 			String[] properties = eventReceived.getPropertyNames();
 			String property;
@@ -494,9 +507,10 @@ public class EventAdminTests extends DefaultTestBundleControl {
 	 * Tests support for type String as EventConstants.EVENT_TOPIC property value.
 	 * An implementation passes this test if an event is received on the topic.
 	 */
+	@Test
 	public void testEventTopicsPropertyString() {
 		ServiceTracker<TBCService,TBCService> trackerProvider1 = new ServiceTracker<>(
-				getContext(),
+				context,
 				"org.osgi.test.cases.event.tb1.Activator", null);
 		trackerProvider1.open();
 		TBCService tbcService1 = trackerProvider1.getService();
@@ -514,9 +528,10 @@ public class EventAdminTests extends DefaultTestBundleControl {
 	 * Tests support for type String[] as EventConstants.EVENT_TOPIC property value.
 	 * An implementation passes this test if an event is received on each topic.
 	 */
+	@Test
 	public void testEventTopicsPropertyStringArray() {
 		ServiceTracker<TBCService,TBCService> trackerProvider1 = new ServiceTracker<>(
-				getContext(),
+				context,
 				"org.osgi.test.cases.event.tb1.Activator", null);
 		trackerProvider1.open();
 		TBCService tbcService1 = trackerProvider1.getService();
@@ -539,9 +554,10 @@ public class EventAdminTests extends DefaultTestBundleControl {
 	 * Tests support for type Collection<String> as EventConstants.EVENT_TOPIC property value.
 	 * An implementation passes this test if an event is received on each topic.
 	 */
+	@Test
 	public void testEventTopicsPropertyStringCollection() {
 		ServiceTracker<TBCService,TBCService> trackerProvider1 = new ServiceTracker<>(
-				getContext(),
+				context,
 				"org.osgi.test.cases.event.tb1.Activator", null);
 		trackerProvider1.open();
 		TBCService tbcService1 = trackerProvider1.getService();
@@ -564,9 +580,10 @@ public class EventAdminTests extends DefaultTestBundleControl {
 	 * Ensures EventAdmin does not deliver an event published on topic "a/b/c"
 	 * to an EventHandler listening to topic a/b/c/*.
 	 */
+	@Test
 	public void testEventDeliveryForWildcardTopic1() {
 		ServiceTracker<TBCService,TBCService> trackerProvider1 = new ServiceTracker<>(
-				getContext(),
+				context,
 				"org.osgi.test.cases.event.tb1.Activator", null);
 		trackerProvider1.open();
 		TBCService tbcService1 = trackerProvider1.getService();
@@ -583,9 +600,10 @@ public class EventAdminTests extends DefaultTestBundleControl {
 	 * Ensures EventAdmin delivers an event published to topic "a/b/c" or
 	 * "a/b/c/d" to an EventHandler listening to topics "a/b/c" and "a/b/c/*".
 	 */
+	@Test
 	public void testEventDeliveryForWildcardTopic2() {
 		ServiceTracker<TBCService,TBCService> trackerProvider1 = new ServiceTracker<>(
-				getContext(),
+				context,
 				"org.osgi.test.cases.event.tb1.Activator", null);
 		trackerProvider1.open();
 		TBCService tbcService1 = trackerProvider1.getService();
