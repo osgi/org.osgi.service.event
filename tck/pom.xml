@@ -20,7 +20,7 @@
 		<org.osgi.framework.version>1.10.0</org.osgi.framework.version>
 		<org.osgi.namespace.service.version>1.0.0</org.osgi.namespace.service.version>
 		<org.osgi.resource.version>1.0.1</org.osgi.resource.version>
-		<org.osgi.service.cm.version>1.6.0</org.osgi.service.cm.version>
+		<org.osgi.service.cm.version>1.6.1</org.osgi.service.cm.version>
 		<org.osgi.service.component.version>1.5.1</org.osgi.service.component.version>
 		<org.osgi.service.permissionadmin.version>1.2.1</org.osgi.service.permissionadmin.version>
 		<org.osgi.util.function.version>1.2.0</org.osgi.util.function.version>
